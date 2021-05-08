@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+.navbar-container
+{
+    width: 100%;
+    height: 60px;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: royalblue;
+}
+.navbar-container > div
+{
+    display : flex;
+    align-items: center;
+}
+.left > div
+{
+    padding-left: 20px;
+}
+.logo
+{
+    font-size: 30px;
+    color :salmon;
+}
+.quiz-name
+{
+    font-size: 25px;
+    font-family: 'Raleway', sans-serif;
+    font-weight:bold;
+}
