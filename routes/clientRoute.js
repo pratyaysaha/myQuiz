@@ -17,7 +17,6 @@ router.get('/:quizid',async (req,res)=>{
             data.options=item.options
             sendQuestion.push(data); 
         })
-        console.log(sendQuestion)
         res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
     }
     catch(err)

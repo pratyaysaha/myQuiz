@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 html,body
 {
     margin: 0px;
@@ -7,3 +8,191 @@ html,body
     background-color: black;
     color: white;
 }
+.quiz-details
+{
+    padding-left: 50px;
+    padding-top: 40px;
+}
+.label
+{
+    font-size: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+.det
+{
+    padding-top: 20px;
+    padding-left: 20px;
+    width: 40%;
+}
+.det > div
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 10px;
+    font-size: 18px;
+    font-family: 'Raleway', sans-serif;
+}
+.det > div > div
+{
+    padding-right: 20px;
+    width: 40%;
+    
+}
+.inside-label
+{
+    color: orange;
+    width: 40px;
+}
+.candidate-details,.question-container
+{
+    padding-left: 50px;
+    padding-top: 40px;
+}
+.c-details
+{
+    padding-top: 20px;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.c-details > div
+{
+    display: flex;
+    flex-direction:column;
+    padding-top: 10px;
+    font-size: 18px;
+    font-family: 'Raleway', sans-serif;
+    padding-bottom: 20px;
+    width: 45%;
+}
+.input-field
+{
+    width: 70%;
+    padding-top: 10px;
+}
+.input
+{
+    background-color: transparent;
+    height: 30px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    width: 95%;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 200;
+}
+.border
+{
+    border: 1px solid rgb(185, 11, 156);
+}
+.important
+{
+    color: red;
+    font-weight: bold;
+}
+.question-label
+{
+    font-size: 20px;
+    color:darkturquoise;
+    font-family: 'Raleway', sans-serif;
+    padding-bottom: 10px;
+    user-select: none;
+}
+.ques
+{
+    padding-top: 20px;
+    padding-left: 20px;
+    width: 95%;
+}
+.option
+{
+    padding-bottom: 7px;
+    font-size: 17px;
+    font-family: 'Raleway', sans-serif;
+    user-select: none;
+}
+.option>input[type="radio" i] {
+    border: 0px;
+    height:15px;
+    width:15px;
+    background-color: #2196F3;
+}
+.option>input
+{
+    cursor: pointer;
+}
+.question-container
+{
+    padding-bottom: 30px;
+}
+.button
+{
+    font-family: 'Raleway', sans-serif;
+    color: rgb(187, 67, 167);
+    user-select: none;
+}
+.button:hover
+{
+    cursor: pointer;
+}
+.submit{
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    padding-bottom: 40px;
+}
+.button.submit
+{
+    padding: 10px 15px 10px 15px;   
+    background-color: peru;
+    color: white;
+    width:70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+@media screen and (max-width: 750px) {
+    .quiz-details,.candidate-details,.question-container
+    {
+        padding-left: 10px;
+        padding-top: 40px;
+    }
+    .det,.c-details,.ques
+    {
+        padding-left: 10px;
+        width: 80%;
+    }
+    .c-details
+    {
+        display: flex;
+        flex-direction: column;
+    }
+    .c-details>div
+    {
+        width: 90%;
+    }
+    .det>div
+    {
+        flex-direction: column;
+        padding-bottom: 20px;
+    }
+    .det > div > div
+    {
+        padding-right: 20px;
+        width: 100%;
+    }
+    .c-details > div > div
+    {
+        width: 100%;
+    }
+    .submit
+    {
+        justify-content: flex-start;
+        padding-left: 10px;
+    }
+  }

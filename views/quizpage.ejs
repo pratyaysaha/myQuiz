@@ -11,7 +11,142 @@
 <body>
     <%- include('../views/header')%>
     <div class="quiz-details">
+        <div class="label">
+            Quiz Details
+        </div>
+        <div class="det">
+            <div class="det-quiz-name">
+                <div class="inside-label">
+                    Name 
+                </div>
+                <div class="inside-value">
+                    <%= data.quizDetails.name%>
+                </div>
+            </div>
+            <div class="det-quiz-author">
+                <div class="inside-label">
+                     Author
+                </div>
+                <div class="inside-value">
+                    <%= data.quizDetails.author%>
+                </div>
+            </div>
+            <div class="det-quiz-authoremail">
+                <div class="inside-label">
+                    Email
+                </div>
+                <div class="inside-value">
+                    <%= data.quizDetails.authorEmail%>
+                </div>
+            </div>
+        </div>
         
     </div>
+    <div class="candidate-details">
+        <div class="label">
+            Candidate Details
+        </div>
+        <div class="c-details">
+            <div class="candidate-name">
+                <div class="inside-label">Name<span class="important">*</span></div>
+                <div class="input-field">
+                    <input class="input name" type="text" value=" ">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="candidate-email">
+                <div class="inside-label">Email<span class="important">*</span></div>
+                <div class="input-field">
+                    <input class="input email" type="text" value=" " onblur="validEmail(this.value)">
+                    <div class="border"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="question-container">
+        <div class="label">
+            Questions
+        </div>
+        <% data.questions.map((item,index)=>{ %>
+            <div class="ques">
+                <div class="question-label">
+                    <%= item.ques %>
+                </div>
+                <div class="options">
+                    <% item.options.map((item2, index)=>{ %>
+                        <div class="option">
+                            <input type="radio" class="<%= item._id+' '+index %>" value=<%=item2%> name=<%=item._id%>>
+                            <span class= option-label><%= item2 %></span>
+                        </div>
+                   <%})%>
+                </div>
+                <div class="button clear-input" onclick="myfunction(`<%= item._id%>`)">
+                    Clear choice
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    <div class="submit">
+        <div class="button submit" onclick="submit()">
+            <div class="button-label">Submit</div>
+        </div>
+    </div>
+
 </body>
+<script>
+    var obj=[]
+    var temp
+    temp=`<%- JSON.stringify(data.questions) %>` 
+    obj=JSON.parse(temp)
+    const myfunction=(val)=>{
+        var radioButtons=document.getElementsByClassName(`${val}`)
+        for(i=0;i<=radioButtons.length-1;i++)
+        {
+            radioButtons[i].checked=false
+        }
+    }
+    const validEmail=(email)=>{
+        var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
+        if(email.match(mailformat))
+        {
+            document.querySelector(".input.email").style.color='white'
+            return true;
+        }
+        else
+        {
+            document.querySelector(".input.email").focus()
+            document.querySelector(".input.email").style.color='red'
+            return false;
+        }
+    }
+    const submit=()=>{
+        var submit={}
+        var name=document.querySelector('.input.name').value
+        var email=document.querySelector('.input.email').value
+        if(name===' '|| email===' ' || !validEmail(email))
+        {
+            alert('Fill up the required fields!!')
+            return 
+        }
+        submit.name=name
+        submit.email=email
+        submit.quizId=`<%=data.quizDetails._id%>`
+        var submission=[]
+        obj.map((item)=>{
+            var radioButtons=document.getElementsByClassName(`${item._id}`)
+            var temp={};
+            temp.qid=item._id;
+            temp.submittedAnswer=null
+            for(i=0;i<=radioButtons.length-1;i++)
+            {
+                if(radioButtons[i].checked==true)
+                    temp.submittedAnswer=radioButtons[i].value
+            }
+            submission.push(temp)
+        })
+        submit.submission=submission
+        console.log(submission)
+        console.log(submit)
+    }
+</script>
 </html>
