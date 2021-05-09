@@ -151,54 +151,57 @@ router.post('/assessment/:quizid',async (req,res)=>{
             update 
         }) 
  */
-router.post('/evaluate/:quizid', async (req,res) => {
-    try{
-        const submits=await Submit.find({quizId: req.params.quizid})
-        const questions=await Question.find({quizId: req.params.quizid})
+router.post('/evaluate/:quizid', async (req, res) => {
+    try {
+        const submits = await Submit.find({ quizId: req.params.quizid })
+        const questions = await Question.find({ quizId: req.params.quizid })
         console.log(submits)
-        for(let i=0;i<questions.length;i++){
+        for (let i = 0; i < questions.length; i++) {
             console.log(questions[i]._id)
         }
-        
-        submits.map((item) => {
-            var totalMarks=0
-            item.Answers.map((data)=>{
-               
-            
-            for(let i=0;i<questions.length;i++){
-                if((questions[i]._id)==data.quesId)
-                {
-                    console.log(questions[i].answer)
-                    console.log("p")
-                    console.log(data.submittedAnswer)
-                    if((questions[i].answer)==data.submittedAnswer)
-                    {
-                        console.log("a")
-                        totalMarks+=questions[i].marks
-                    }
-                    else if((questions[i].answer)!=data.submittedAnswer && data.submittedAnswer!=null)
-                    {
-                        console.log("b")
-                        totalMarks-=questions[i].negative
-                    }
-                    else if(data.submittedAnswer==null)
-                    {
-                        console.log("c")
-                        questions[i].isNegative=false
+        var statusData=[]
+        submits.map(async (item) => {
+            var totalMarks = 0
+            item.Answers.map((data) => {
+                for (let i = 0; i < questions.length; i++) {
+                    if ((questions[i]._id) == data.quesId) {
+                        console.log(questions[i].answer)
+                        console.log(data.submittedAnswer)
+                        if ((questions[i].answer) == data.submittedAnswer) {
+                            totalMarks += questions[i].marks
+                        }
+                        else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
+                            totalMarks -= questions[i].negative
+                        }
+                        else if (data.submittedAnswer == null) {
+                        }
                     }
                 }
-            }
-           
-        })
-        console.log(totalMarks)
-        // const updateQuery= await Submit.updateOne({"_id": `${item._id}`}, {$set:{"totalMarks" : `${totalMarks}`}})
-        // res.json({"status" : updateQuery.ok, "data" : await Submit.findById(quizId)})
 
+            })
+            console.log(totalMarks)
+            try {
+                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { $set: { "totalMarks": `${totalMarks}`} })
+                var temp={}
+                temp.status=true
+                temp.submissionId=item._id
+                temp.data=updateQuery
+                statusData.push(temp)
+            }
+            catch (err) {
+                console.log(err)
+                var temp={}
+                temp.status=false
+                temp.submissionId=item._id
+                temp.error=err
+                statusData.push(temp)
+            }
         })
-    
+        console.log(statusData)
+        res.json({status : statusData})
     }
-    catch(err){
-        console.log("err")
+    catch (err) {
+        res.json({ "status": false, "error" : err })
     }
 })
 
