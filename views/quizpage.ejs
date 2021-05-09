@@ -91,7 +91,7 @@
             <div class="button-label">Submit</div>
         </div>
     </div>
-
+    <%- include('../views/footer')%>
 </body>
 <script>
     var obj=[]
@@ -157,13 +157,16 @@
             body:JSON.stringify(submit),
         })
             .then((Response)=> Response.json())
-            .then((data)=>{if(data.status){
+            .then((data)=>{
+                console.log(data)
+                if(data.status){    
                 //success page
-            }
-            else
-            {
-                alert("Retry!!")
-            }
+                    location.assign(`${window.location.origin}/quiz/${data.data._id}/success`)
+                }
+                else
+                {
+                    alert("Retry!!")
+                }
         })
     }
 </script>

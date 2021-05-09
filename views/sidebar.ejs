@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="/sidebar.css">
+<% var menu=[{title: 'My Quizes', path: 'allquiz'},{title: 'Create Quiz', path: 'newquiz'},{title: 'Evaluation', path: 'evaluation'}] %>
+<div class="sidebar-container">
+    <div class="menu-options">
+        <% menu.map((item)=>{ %>
+            <div class="menu-option <%item.title%>" onclick="navigate(`<%= item.path %>`)">
+                <div class="menu-label">
+                    <%=item.title%>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>

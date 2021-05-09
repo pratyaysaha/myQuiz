@@ -27,7 +27,6 @@
         candidate : {
             type: String,
             required: true,
-            unique: true
         },
         Email : {
             type: String,
