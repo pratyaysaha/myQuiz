@@ -50,6 +50,10 @@
         totalMarks:{
             type : Number,
             default : 0
+        },
+        isEvaluated : {
+            type : Boolean,
+            default: false
         }
     })
     module.exports=mongoose.model('Submit',submit)

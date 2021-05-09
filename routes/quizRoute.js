@@ -137,7 +137,7 @@ router.post('/assessment/:quizid',async (req,res)=>{
     
 })
 /*
-    POST /evaluate/:quizid
+    GET /evaluate/:quizid
         - search from submits collection where quizId = quizid (submitted)
         - search from questions collection where quizId= quizid (answers are stored)
         - submission.map((item)=>{
@@ -151,57 +151,47 @@ router.post('/assessment/:quizid',async (req,res)=>{
             update 
         }) 
  */
-router.post('/evaluate/:quizid', async (req, res) => {
+router.get('/evaluate/:quizid', async (req, res) => {
     try {
         const submits = await Submit.find({ quizId: req.params.quizid })
         const questions = await Question.find({ quizId: req.params.quizid })
-        console.log(submits)
-        for (let i = 0; i < questions.length; i++) {
-            console.log(questions[i]._id)
-        }
-        var statusData=[]
         submits.map(async (item) => {
-            var totalMarks = 0
-            item.Answers.map(async (data) => {
-                for (let i = 0; i < questions.length; i++) {
-                    if ((questions[i]._id) == data.quesId) {
-                        console.log(questions[i].answer)
-                        console.log(data.submittedAnswer)
-                        if ((questions[i].answer) == data.submittedAnswer) {
-                            totalMarks += questions[i].marks
-                            data.marksObtained= questions[i].marks
-                        }
-                        else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
-                            totalMarks -= questions[i].negative
-                            data.marksObtained= -questions[i].negative
-                        }
-                        else if (data.submittedAnswer == null) {
-                            data.marksObtained= 0
+            if (!item.isEvaluated) {
+                var totalMarks = 0
+                item.Answers.map(async (data) => {
+                    for (let i = 0; i < questions.length; i++) {
+                        if ((questions[i]._id) == data.quesId) {
+                            if ((questions[i].answer) == data.submittedAnswer) {
+                                totalMarks += questions[i].marks
+                                data.marksObtained = questions[i].marks
+                            }
+                            else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
+                                totalMarks -= questions[i].negative
+                                data.marksObtained = -questions[i].negative
+                            }
+                            else if (data.submittedAnswer == null) {
+                                data.marksObtained = 0
+                            }
                         }
                     }
+                })
+                var temp = {}
+                temp.submissionId = item._id
+                try {
+                    const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
+                    temp.status= true
+                    temp.data = updateQuery
+                    
                 }
-            })
-            console.log(item.Answers)
-            console.log(totalMarks)
-            try {
-                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` },{"totalMarks": `${totalMarks}`,"$set": { "Answers" : item.Answers } })
-                var temp={}
-                temp.status=true
-                temp.submissionId=item._id
-                temp.data=updateQuery
-                statusData.push(temp)
+                catch (err) {
+                    console.log(err)
+                    temp.status = false
+                    temp.error = err
+                }
             }
-            catch (err) {
-                console.log(err)
-                var temp={}
-                temp.status=false
-                temp.submissionId=item._id
-                temp.error=err
-                statusData.push(temp)
-            }
+            
         })
-        console.log(statusData)
-        res.json({status : statusData})
+        res.json({status : true})
     }
     catch (err) {
         res.json({ "status": false, "error" : err })
