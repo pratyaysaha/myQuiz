@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="/allquiz.css">
+<div class="allquiz-container">
+    <div class="label">
+        Quizes
+    </div>
+    <div class="quiz-list">
+        <% data.map((item)=>{ %>
+            <div class="quiz">
+                <div class="name">
+                    <%=item.name%>
+                </div>
+                <div class="url">
+                    <% var hello= item.name %>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>

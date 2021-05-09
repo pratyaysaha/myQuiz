@@ -156,6 +156,11 @@ html,body
     align-items: center;
     font-size: 20px;
 }
+.button.submit:hover
+{
+    cursor: pointer;
+    background-color: rgb(243, 142, 41);
+}
 @media screen and (max-width: 750px) {
     .quiz-details,.candidate-details,.question-container
     {

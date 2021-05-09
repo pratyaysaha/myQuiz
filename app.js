@@ -2,6 +2,7 @@ const express=require('express')
 const mongoose=require('mongoose')
 const quizRoute= require('./routes/quizRoute')
 const clientRoute=require('./routes/clientRoute')
+const QuizDetails= require('./models/quizdetails')
 const app=express()
 require('dotenv/config')
 
@@ -10,8 +11,16 @@ app.use('/quiz',clientRoute)
 app.use(express.static(__dirname+'/css'))
 app.set('view engine', 'ejs')
 
-app.get('/',(req,res)=>{
-    res.send("hello world")
+app.get('/',async (req,res)=>{
+    try{
+        const quizDetails=await QuizDetails.find()
+        res.render('createquiz',{data : quizDetails})
+    }
+    catch(err)
+    {
+        console.log("err");
+    }
+    
 })
 
 mongoose.connect(process.env.DB_CONNECTION,{ 

@@ -27,5 +27,9 @@ router.get('/:quizid',async (req,res)=>{
 router.get('/:quizname',async(req, res)=>{
 
 })
+router.get('/:submissionId/success' ,async(req, res)=>{
+    res.render('success')
+})
+
 
 module.exports=router

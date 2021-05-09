@@ -26,7 +26,11 @@
         },
         candidate : {
             type: String,
+<<<<<<< HEAD
             required: true
+=======
+            required: true,
+>>>>>>> 9dfe873a902969457017de91fa0d9f6ed9525bc7
         },
         Email : {
             type: String,

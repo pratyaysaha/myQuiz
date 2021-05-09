@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href="/sidebar.css">
+    <title>MyQuiz</title>
+</head>
+<body>
+    <%- include('../views/header') %>
+        <div class="content-container">
+            <% var menu=[{title: 'My Quizes' , path: 'allquiz' },{title: 'Create Quiz' , path: 'newquiz'
+                },{title: 'Evaluation' , path: 'evaluation' }] %>
+                <div class="sidebar-container">
+                    <div class="menu-options">
+                        <% menu.map((item)=>{ %>
+                            <div class="menu-option" onclick="navigate(`<%= item.path %>`)">
+                                <div class="menu-label <%=item.path%>">
+                                    <%=item.title%>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+                <div class="container">
+                    
+                </div>
+        </div>
+        <%- include('../views/footer') %>
+</body>
+<script>
+    window.onload=()=>{
+        document.querySelector('.container').innerHTML=`<%- include('../views/allquiz') %>`
+        document.querySelector('.menu-label.allquiz').style.color='rgb(185, 11, 156)'
+        document.querySelector('.menu-label.newquiz').style.color='white'
+        document.querySelector('.menu-label.evaluation').style.color='white'
+    }
+    const navigate=(path)=>{
+        if(path=='allquiz')
+        {
+            document.querySelector('.container').innerHTML=`<%- include('../views/allquiz') %>`
+            document.querySelector('.menu-label.allquiz').style.color='rgb(185, 11, 156)'
+            document.querySelector('.menu-label.newquiz').style.color='white'
+            document.querySelector('.menu-label.evaluation').style.color='white'
+
+        }
+        else if(path=='newquiz')
+        {
+            document.querySelector('.container').innerHTML=`<%- include('../views/newquiz') %>`
+            document.querySelector('.menu-label.newquiz').style.color='rgb(185, 11, 156)'
+            document.querySelector('.menu-label.evaluation').style.color='white'
+            document.querySelector('.menu-label.allquiz').style.color='white'
+
+        }
+        else if(path=='evaluation')
+        {
+            document.querySelector('.container').innerHTML=`<%- include('../views/evaluation') %>`
+            document.querySelector('.menu-label.evaluation').style.color='rgb(185, 11, 156)'
+            document.querySelector('.menu-label.newquiz').style.color='white'
+            document.querySelector('.menu-label.allquiz').style.color='white'
+        }
+
+    }
+</script>
+</html>
