@@ -1,7 +1,9 @@
 const e = require('express');
 const express = require('express')
 const Quiz= require('../models/quizdetails')
-const Question=require('../models/questions')
+const Question=require('../models/questions');
+// const questions = require('../models/questions');
+const Submit = require('../models/submission');
 const router= express.Router();
 
 router.use(express.json())
@@ -69,6 +71,41 @@ router.post('/create/:id', async (req,res)=>{
     }
     res.json(status)
 })
+
+router.get("/assessment", async (req, res) => {
+    q={}
+    try{
+        const QueryResponse=await Question.find(q)
+        res.json(QueryResponse)
+    }
+    catch(err)
+    {
+        res.json({'status': false, 'error' : err, 'code': 103})
+    }
+})
+router.get("/getData", async (req, res) => {
+    q={}
+    try{
+        const QueryResponse=await Quiz.find(q)
+        res.json(QueryResponse)
+    }
+    catch(err)
+    {
+        res.json({'status': false, 'error' : err, 'code': 103})
+    }
+})
+router.get("/getsubmission", async (req, res) => {
+    q={}
+    try{
+        const QueryResponse=await Submit.find(q)
+        res.json(QueryResponse)
+    }
+    catch(err)
+    {
+        res.json({'status': false, 'error' : err, 'code': 103})
+    }
+})
+
 router.post('/assessment/:quizid',async (req,res)=>{
     var status={}
     var response= await validateQuizID(req.params.quizid)
@@ -80,10 +117,26 @@ router.post('/assessment/:quizid',async (req,res)=>{
     else
     {
         status.status=true
-        var questionIds=await Question.find({'quizId':req.params.quizid})
-        console.log(questionIds)
+        const newsubmit = new Submit({
+            quizId: req.params.quizid,
+            candidate: req.body.candidate,
+            Email: req.body.Email,
+            Answers : req.body.Answers,
+            submittedTime : req.body.submittedTime
+        })
+        try{
+            const ansSubmit = await newsubmit.save();
+            status.data=ansSubmit;
+        }
+        catch(err){
+            status.status=false;
+            status.code=14;
+        }
     }
+    res.json(status)
+    
 })
+
 
 
 module.exports=router
