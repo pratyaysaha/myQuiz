@@ -162,26 +162,29 @@ router.post('/evaluate/:quizid', async (req, res) => {
         var statusData=[]
         submits.map(async (item) => {
             var totalMarks = 0
-            item.Answers.map((data) => {
+            item.Answers.map(async (data) => {
                 for (let i = 0; i < questions.length; i++) {
                     if ((questions[i]._id) == data.quesId) {
                         console.log(questions[i].answer)
                         console.log(data.submittedAnswer)
                         if ((questions[i].answer) == data.submittedAnswer) {
                             totalMarks += questions[i].marks
+                            data.marksObtained= questions[i].marks
                         }
                         else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
                             totalMarks -= questions[i].negative
+                            data.marksObtained= questions[i].negative
                         }
                         else if (data.submittedAnswer == null) {
+                            data.marksObtained= 0
                         }
                     }
                 }
-
             })
+            console.log(item.Answers)
             console.log(totalMarks)
             try {
-                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { $set: { "totalMarks": `${totalMarks}`} })
+                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` },{"totalMarks": `${totalMarks}`,"$push": { "Answers" : {"$each" : item.Answers} } })
                 var temp={}
                 temp.status=true
                 temp.submissionId=item._id
