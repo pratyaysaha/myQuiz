@@ -143,13 +143,64 @@ router.post('/assessment/:quizid',async (req,res)=>{
         - submission.map((item)=>{
             var totalMarks
             item.Answer.quesId = find from questions colection
-                - compare(item.Answer.submittedAnswer , answer)
+                - compare(item.Answer.submittedAnswer , questions-answer)
                     - if(item.Answer.submittedAnswer == null ) no negative 
-                    - if( not a match) totalMarks-=negative
+                    - if( not a match and not null) totalMarks-=negative
                     - if(match) totalMarks+=marks
+
+            update 
         }) 
  */
+router.post('/evaluate/:quizid', async (req,res) => {
+    try{
+        const submits=await Submit.find({quizId: req.params.quizid})
+        const questions=await Question.find({quizId: req.params.quizid})
+        console.log(submits)
+        for(let i=0;i<questions.length;i++){
+            console.log(questions[i]._id)
+        }
+        
+        submits.map((item) => {
+            var totalMarks=0
+            item.Answers.map((data)=>{
+               
+            
+            for(let i=0;i<questions.length;i++){
+                if((questions[i]._id)==data.quesId)
+                {
+                    console.log(questions[i].answer)
+                    console.log("p")
+                    console.log(data.submittedAnswer)
+                    if((questions[i].answer)==data.submittedAnswer)
+                    {
+                        console.log("a")
+                        totalMarks+=questions[i].marks
+                    }
+                    else if((questions[i].answer)!=data.submittedAnswer && data.submittedAnswer!=null)
+                    {
+                        console.log("b")
+                        totalMarks-=questions[i].negative
+                    }
+                    else if(data.submittedAnswer==null)
+                    {
+                        console.log("c")
+                        questions[i].isNegative=false
+                    }
+                }
+            }
+           
+        })
+        console.log(totalMarks)
+        // const updateQuery= await Submit.updateOne({"_id": `${item._id}`}, {$set:{"totalMarks" : `${totalMarks}`}})
+        // res.json({"status" : updateQuery.ok, "data" : await Submit.findById(quizId)})
 
+        })
+    
+    }
+    catch(err){
+        console.log("err")
+    }
+})
 
 module.exports=router
 
