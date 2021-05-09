@@ -173,7 +173,7 @@ router.post('/evaluate/:quizid', async (req, res) => {
                         }
                         else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
                             totalMarks -= questions[i].negative
-                            data.marksObtained= questions[i].negative
+                            data.marksObtained= -questions[i].negative
                         }
                         else if (data.submittedAnswer == null) {
                             data.marksObtained= 0
@@ -184,7 +184,7 @@ router.post('/evaluate/:quizid', async (req, res) => {
             console.log(item.Answers)
             console.log(totalMarks)
             try {
-                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` },{"totalMarks": `${totalMarks}`,"$push": { "Answers" : {"$each" : item.Answers} } })
+                const updateQuery = await Submit.updateOne({ "_id": `${item._id}` },{"totalMarks": `${totalMarks}`,"$set": { "Answers" : item.Answers } })
                 var temp={}
                 temp.status=true
                 temp.submissionId=item._id
