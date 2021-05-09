@@ -37,7 +37,7 @@
             }
         },
         Answers : {
-            type: answers,
+            type: [answers],
             required: true
         },
         submittedTime : {
