@@ -136,7 +136,19 @@ router.post('/assessment/:quizid',async (req,res)=>{
     res.json(status)
     
 })
-
+/*
+    POST /evaluate/:quizid
+        - search from submits collection where quizId = quizid (submitted)
+        - search from questions collection where quizId= quizid (answers are stored)
+        - submission.map((item)=>{
+            var totalMarks
+            item.Answer.quesId = find from questions colection
+                - compare(item.Answer.submittedAnswer , answer)
+                    - if(item.Answer.submittedAnswer == null ) no negative 
+                    - if( not a match) totalMarks-=negative
+                    - if(match) totalMarks+=marks
+        }) 
+ */
 
 
 module.exports=router

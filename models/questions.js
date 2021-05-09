@@ -27,7 +27,8 @@ const Question=mongoose.Schema({
     },
     negative:{
         type: Number,
-        required: true
+        required: true,
+        default: 0
     }
 
 })

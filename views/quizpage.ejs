@@ -50,14 +50,14 @@
             <div class="candidate-name">
                 <div class="inside-label">Name<span class="important">*</span></div>
                 <div class="input-field">
-                    <input class="input name" type="text" value=" ">
+                    <input class="input name" type="text" value="">
                     <div class="border"></div>
                 </div>
             </div>
             <div class="candidate-email">
                 <div class="inside-label">Email<span class="important">*</span></div>
                 <div class="input-field">
-                    <input class="input email" type="text" value=" " onblur="validEmail(this.value)">
+                    <input class="input email" type="text" value="" onblur="validEmail(this.value)">
                     <div class="border"></div>
                 </div>
             </div>
@@ -123,19 +123,19 @@
         var submit={}
         var name=document.querySelector('.input.name').value
         var email=document.querySelector('.input.email').value
-        if(name===' '|| email===' ' || !validEmail(email))
+        if(name===''|| email==='' || !validEmail(email))
         {
             alert('Fill up the required fields!!')
             return 
         }
-        submit.name=name
-        submit.email=email
+        submit.candidate=name
+        submit.Email=email
         submit.quizId=`<%=data.quizDetails._id%>`
         var submission=[]
         obj.map((item)=>{
             var radioButtons=document.getElementsByClassName(`${item._id}`)
             var temp={};
-            temp.qid=item._id;
+            temp.quesId=item._id;
             temp.submittedAnswer=null
             for(i=0;i<=radioButtons.length-1;i++)
             {
@@ -144,9 +144,27 @@
             }
             submission.push(temp)
         })
-        submit.submission=submission
+        submit.Answers=submission
+        submit.submittedTime=new Date()
         console.log(submission)
         console.log(submit)
+        const url= `${window.location.origin}/api/assessment/<%=data.quizDetails._id%>`
+        fetch(url,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(submit),
+        })
+            .then((Response)=> Response.json())
+            .then((data)=>{if(data.status){
+                //success page
+            }
+            else
+            {
+                alert("Retry!!")
+            }
+        })
     }
 </script>
 </html>

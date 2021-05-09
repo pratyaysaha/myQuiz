@@ -11,7 +11,10 @@
         },
         submittedAnswer : {
             type: String,
-            required: true
+        },
+        marksObtained: {
+            type: Number,
+            default : 0
         }
     }])
     
@@ -42,7 +45,12 @@
         },
         submittedTime : {
             type: Date,
-            default: new Date()
+            default: new Date(),
+            required: true
+        },
+        totalMarks:{
+            type : Number,
+            default : 0
         }
     })
     module.exports=mongoose.model('Submit',submit)
