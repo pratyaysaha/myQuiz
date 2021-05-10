@@ -10,9 +10,19 @@
                     <%=item.name%>
                 </div>
                 <div class="url">
-                    <% var hello= item.name %>
+                    <a href="/quiz/<%= item._id %>">
+                        <div class="link-quiz">Link to Quiz</div>
+                    </a>
+                </div>
+                <div class="copy-link" id=<%=item._id%> onclick="copyText(`<%=item._id%>`)">
+                    Reveal the link
                 </div>
             </div>
         <% }) %>
     </div>
 </div>
+<script>
+    const copyText=(id)=>{
+        document.getElementById(id).innerHTML=`${window.location.origin}/quiz/${id}`
+    }
+</script>

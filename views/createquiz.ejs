@@ -12,8 +12,7 @@
 <body>
     <%- include('../views/header') %>
         <div class="content-container">
-            <% var menu=[{title: 'My Quizes' , path: 'allquiz' },{title: 'Create Quiz' , path: 'newquiz'
-                },{title: 'Evaluation' , path: 'evaluation' }] %>
+            <% var menu=[{title: 'My Quizes' , path: 'allquiz' },{title: 'Create Quiz' , path: 'newquiz'},{title: 'Evaluation' , path: 'evaluation' }] %>
                 <div class="sidebar-container">
                     <div class="menu-options">
                         <% menu.map((item)=>{ %>
@@ -63,6 +62,9 @@
             document.querySelector('.menu-label.allquiz').style.color='white'
         }
 
+    }
+    const copytext=(val)=>{
+        console.log(val)
     }
 </script>
 </html>

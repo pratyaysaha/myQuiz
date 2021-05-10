@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href='/createquiz.css'><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Quiz</title>
+    <link rel="stylesheet" href='/createquiz.css'>
+    <title>My Quiz</title>
 </head>
 <body>
     <%- include('../views/header') %>
     <div class="content-container">
-        <%- include('../views/sidebar',{select : "newquiz"}) %>
+        <%- include('../views/sidebar',{select : "allquiz"}) %>
         <div class="container">
-        
+            <%- include('../views/allquiz.ejs') %>
         </div>
     </div>
     <%- include('../views/footer') %>
 </body>
+<script>
+    
+</script>
 </html>
