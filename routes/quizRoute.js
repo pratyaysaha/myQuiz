@@ -2,9 +2,14 @@ const e = require('express');
 const express = require('express')
 const Quiz= require('../models/quizdetails')
 const Question=require('../models/questions');
+
+
 // const questions = require('../models/questions');
 const Submit = require('../models/submission');
 const router= express.Router();
+
+
+
 
 router.use(express.json())
 
@@ -22,6 +27,7 @@ const validateQuizID= async (id)=>{
 }
 router.get('/',(req,res)=>{
     res.send("This is api page")
+    
 })
 router.post('/create',async (req,res)=>{
     console.log(req.body)
@@ -137,19 +143,124 @@ router.post('/assessment/:quizid',async (req,res)=>{
     
 })
 /*
-    POST /evaluate/:quizid
+    GET /evaluate/:quizid
         - search from submits collection where quizId = quizid (submitted)
         - search from questions collection where quizId= quizid (answers are stored)
         - submission.map((item)=>{
             var totalMarks
             item.Answer.quesId = find from questions colection
-                - compare(item.Answer.submittedAnswer , answer)
+                - compare(item.Answer.submittedAnswer , questions-answer)
                     - if(item.Answer.submittedAnswer == null ) no negative 
-                    - if( not a match) totalMarks-=negative
+                    - if( not a match and not null) totalMarks-=negative
                     - if(match) totalMarks+=marks
+
+            update 
         }) 
  */
+router.get('/evaluate/:quizid', async (req, res) => {
+    try {
+        const submits = await Submit.find({ quizId: req.params.quizid })
+        const questions = await Question.find({ quizId: req.params.quizid })
+        submits.map(async (item) => {
+            if (!item.isEvaluated) {
+                var totalMarks = 0
+                item.Answers.map(async (data) => {
+                    for (let i = 0; i < questions.length; i++) {
+                        if ((questions[i]._id) == data.quesId) {
+                            if ((questions[i].answer) == data.submittedAnswer) {
+                                totalMarks += questions[i].marks
+                                data.marksObtained = questions[i].marks
+                            }
+                            else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
+                                totalMarks -= questions[i].negative
+                                data.marksObtained = -questions[i].negative
+                            }
+                            else if (data.submittedAnswer == null) {
+                                data.marksObtained = 0
+                            }
+                        }
+                    }
+                })
+                var temp = {}
+                temp.submissionId = item._id
+                try {
+                    const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
+                    temp.status= true
+                    temp.data = updateQuery
+                    
+                }
+                catch (err) {
+                    console.log(err)
+                    temp.status = false
+                    temp.error = err
+                }
+            }
+            
+        })
+        res.json({status : true})
+    }
+    catch (err) {
+        res.json({ "status": false, "error" : err })
+    }
+})
 
+router.get('/evaluate/submission/:submitid', async (req,res) => {
+    try {
+        const submits = await Submit.find({ _id: req.params.submitid })
+        console.log(submits)
+        const item = submits[0]
+            console.log(item)
+            if (!item.isEvaluated) {
+                var totalMarks = 0
+                const questions = await Question.find({ quizId: item.quizId })
+                console.log(questions)
+                for (let i = 0; i < questions.length; i++) {
+                    
+                    item.Answers.map(async (data) => {
+                        
+                    if ((questions[i]._id) == data.quesId) {
+                        if ((questions[i].answer) == data.submittedAnswer) {
+                            totalMarks += questions[i].marks
+                            data.marksObtained = questions[i].marks
+                        }
+                        else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
+                            totalMarks -= questions[i].negative
+                            data.marksObtained = -questions[i].negative
+                        }
+                        else if (data.submittedAnswer == null) {
+                            data.marksObtained = 0
+                        }
+                
+                
+            }
+        
+    })
+                    
+    }
+}
+    console.log(totalMarks)
+    var temp = {}
+    temp.submissionId = item._id
+    try {
+        const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
+        temp.status= true
+        temp.data = updateQuery
+        
+    }
+    catch (err) {
+        console.log(err)
+        temp.status = false
+        temp.error = err
+    }
+
+        
+        res.json({status : true})
+    }
+    
+    catch (err){
+        console.log(err)
+    }
+})
 
 module.exports=router
 
