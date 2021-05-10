@@ -7,11 +7,10 @@
         <% data.map((item)=>{ %>
             <div class="quiz">
                 <div class="name">
-                    <%=item.name%>
-                </div>
-                <div class="url">
                     <a href="/quiz/<%= item._id %>">
-                        <div class="link-quiz">Link to Quiz</div>
+                        <div class="link-quiz">
+                            <%=item.name%>
+                        </div>
                     </a>
                 </div>
                 <div class="copy-link" id=<%=item._id%> onclick="copyText(`<%=item._id%>`)">

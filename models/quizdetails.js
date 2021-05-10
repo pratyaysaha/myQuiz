@@ -24,9 +24,13 @@ const QuizDetails= mongoose.Schema({
         type: Date,
         required: true,
     },
-    attempts:{
-        type: Number,
-        required: true
+    stime : {
+        type : Date,
+        required : true
+    },
+    etime : {
+        type : Date,
+        required : true
     }
 })
 module.exports=mongoose.model('Quiz',QuizDetails)

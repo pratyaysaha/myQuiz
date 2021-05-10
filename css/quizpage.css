@@ -43,7 +43,7 @@ html,body
 .inside-label
 {
     color: orange;
-    width: 40px;
+    width: 140px;
 }
 .candidate-details,.question-container
 {
@@ -128,6 +128,7 @@ html,body
 .question-container
 {
     padding-bottom: 30px;
+    min-height: calc(100% - 610px);
 }
 .button
 {

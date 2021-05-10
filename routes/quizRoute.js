@@ -30,7 +30,8 @@ router.post('/create',async (req,res)=>{
         author:req.body.author,
         authorEmail: req.body.authorEmail,
         dot : new Date(),
-        attempts: req.body.attempts 
+        stime : req.body.stime,
+        etime : req.body.etime
     })
     try{
         const newQuiz=await quizdet.save()

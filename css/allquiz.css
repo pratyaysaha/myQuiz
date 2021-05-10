@@ -22,15 +22,27 @@
     height : 40px;
     align-items: center;
     font-size: 20px;
-    width: 70%;
+    width: 80%;
     justify-content: space-between;
     font-family: 'Raleway', sans-serif;
-    
 }
-.url>a{
+.name{
+    width: 40%;
+}
+.name>a{
     text-decoration: none;
-    color: white;
+    color: orange;
+
+}
+.name>a:hover{
+    color:orchid;
 }
 .copy-link{
     font-size: 14px;
+    width: 50%;
+}
+.copy-link:hover
+{
+    cursor: pointer;
+    color: orchid;
 }

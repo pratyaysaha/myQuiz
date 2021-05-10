@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href='/createquiz.css'><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href='/newquiz.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz</title>
 </head>
 <body>
@@ -13,9 +15,96 @@
     <div class="content-container">
         <%- include('../views/sidebar',{select : "newquiz"}) %>
         <div class="container">
-        
+            <div class="author-details">
+                <div class="quiz-name">
+                    <div class="inside-label">Quiz name<span class="important">*</span></div>
+                    <div class="input-field">
+                        <input class="input qname" type="text" value="">
+                        <div class="border"></div>
+                    </div>
+                </div>
+                <div class="author-name">
+                    <div class="inside-label">Author name<span class="important">*</span></div>
+                    <div class="input-field">
+                        <input class="input aname" type="text" value="">
+                        <div class="border"></div>
+                    </div>
+                </div>
+                <div class="author-email">
+                    <div class="inside-label">Email<span class="important">*</span></div>
+                    <div class="input-field">
+                        <input class="input email" type="text" value="" onblur="validEmail(this.value)">
+                        <div class="border"></div>
+                    </div>
+                </div>
+                <div class="start-quiz">
+                    <div class="inside-label">Start time<span class="important">*</span></div>
+                    <div class="input-field">
+                        <input class="input stime" type="datetime-local" value="">
+                        <div class="border"></div>
+                    </div>
+                </div>
+                <div class="end-quiz">
+                    <div class="inside-label">End time<span class="important">*</span></div>
+                    <div class="input-field">
+                        <input class="input etime" type="datetime-local" value="">
+                        <div class="border"></div>
+                    </div>
+                </div>
+                <div class="submit">
+                    <div class="button submit" onclick="create()">
+                        <div class="button-label">Create</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <%- include('../views/footer') %>
 </body>
+<script>
+    const validEmail=(email)=>{
+        var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
+        if(email.match(mailformat))
+        {
+            document.querySelector(".input.email").style.color='white'
+            return true;
+        }
+        else
+        {
+            document.querySelector(".input.email").focus()
+            document.querySelector(".input.email").style.color='red'
+            return false;
+        }
+    }
+    const create=async()=>{
+        
+        const url=`${window.location.origin}/api/create`
+        const data={}
+        data.name=document.querySelector('.input.qname').value
+        data.author=document.querySelector('.input.aname').value
+        data.authorEmail=document.querySelector('.input.email').value
+        data.dot=new Date()
+        data.stime=new Date(document.querySelector('.input.stime').value)
+        data.etime=new Date(document.querySelector('.input.etime').value)
+        console.log(data)
+        fetch(url,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(data),
+        })
+            .then((Response)=>Response.json())
+            .then((data)=>{
+                if(data.status)
+                    {
+                        alert('Success')
+                    }
+                else
+                {
+                    alert('Failed')
+                }
+            })
+    }
+</script>
 </html>
