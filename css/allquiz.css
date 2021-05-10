@@ -1,4 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 .allquiz-container
 {
     padding-left:30px;
+    padding-top: 30px;
+}
+.label
+{
+    font-family: 'Raleway', sans-serif;
+    font-size: 25px;
+    padding-bottom: 20px;
+}
+.quiz-list
+{
+    display: flex;
+    flex-direction: column;
+    width:100%; 
+}
+.quiz
+{
+    display: flex;
+    height : 40px;
+    align-items: center;
+    font-size: 20px;
+    width: 70%;
+    justify-content: space-between;
+    font-family: 'Raleway', sans-serif;
+    
+}
+.url>a{
+    text-decoration: none;
+    color: white;
+}
+.copy-link{
+    font-size: 14px;
 }

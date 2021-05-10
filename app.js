@@ -14,13 +14,19 @@ app.set('view engine', 'ejs')
 app.get('/',async (req,res)=>{
     try{
         const quizDetails=await QuizDetails.find()
-        res.render('createquiz',{data : quizDetails})
+        res.render('quizall',{data : quizDetails})
     }
     catch(err)
     {
         console.log("err");
     }
     
+})
+app.get('/newquiz',async (req,res)=>{
+    res.render('newquiz')
+})
+app.get('/evaluation',async (req,res)=>{
+    res.render('newquiz')
 })
 
 mongoose.connect(process.env.DB_CONNECTION,{ 

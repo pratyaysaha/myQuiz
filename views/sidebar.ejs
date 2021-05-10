@@ -3,11 +3,34 @@
 <div class="sidebar-container">
     <div class="menu-options">
         <% menu.map((item)=>{ %>
-            <div class="menu-option <%item.title%>" onclick="navigate(`<%= item.path %>`)">
-                <div class="menu-label">
+            <div class="menu-option" onclick="navigate(`<%= item.path %>`)">
+                <div class="menu-label <%=item.path%>">
                     <%=item.title%>
-                </div>
+                </div> 
             </div>
         <% }) %>
     </div>
 </div>
+<script>
+    window.onload=()=>{
+        var option=`<%=select%>`
+        if(option==='allquiz')
+        {
+            document.querySelector('.menu-label.allquiz').style.color='rgb(185, 11, 156)'
+            document.querySelector('.menu-label.newquiz').style.color='white'
+            document.querySelector('.menu-label.evaluation').style.color='white'
+        }
+        else if(option==='newquiz')
+        {
+            document.querySelector('.menu-label.allquiz').style.color='white'
+            document.querySelector('.menu-label.newquiz').style.color='rgb(185, 11, 156)'
+            document.querySelector('.menu-label.evaluation').style.color='white'
+        }
+    }
+    const navigate=(path)=>{
+        if(path==='allquiz')
+            location.assign(`${window.location.origin}`)
+        else
+            location.assign(`${window.location.origin}/${path}`)
+    }
+</script>
