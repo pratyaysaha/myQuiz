@@ -2,9 +2,14 @@ const e = require('express');
 const express = require('express')
 const Quiz= require('../models/quizdetails')
 const Question=require('../models/questions');
+
+
 // const questions = require('../models/questions');
 const Submit = require('../models/submission');
 const router= express.Router();
+
+
+
 
 router.use(express.json())
 
@@ -22,6 +27,7 @@ const validateQuizID= async (id)=>{
 }
 router.get('/',(req,res)=>{
     res.send("This is api page")
+    
 })
 router.post('/create',async (req,res)=>{
     console.log(req.body)
@@ -202,7 +208,7 @@ router.get('/evaluate/submission/:submitid', async (req,res) => {
     try {
         const submits = await Submit.find({ _id: req.params.submitid })
         console.log(submits)
-        submits.map(async (item)=>{
+        const item = submits[0]
             console.log(item)
             if (!item.isEvaluated) {
                 var totalMarks = 0
@@ -247,7 +253,7 @@ router.get('/evaluate/submission/:submitid', async (req,res) => {
         temp.error = err
     }
 
-        })
+        
         res.json({status : true})
     }
     
