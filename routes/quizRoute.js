@@ -198,5 +198,63 @@ router.get('/evaluate/:quizid', async (req, res) => {
     }
 })
 
+router.get('/evaluate/submission/:submitid', async (req,res) => {
+    try {
+        const submits = await Submit.find({ _id: req.params.submitid })
+        console.log(submits)
+        submits.map(async (item)=>{
+            console.log(item)
+            if (!item.isEvaluated) {
+                var totalMarks = 0
+                const questions = await Question.find({ quizId: item.quizId })
+                console.log(questions)
+                for (let i = 0; i < questions.length; i++) {
+                    
+                    item.Answers.map(async (data) => {
+                        
+                    if ((questions[i]._id) == data.quesId) {
+                        if ((questions[i].answer) == data.submittedAnswer) {
+                            totalMarks += questions[i].marks
+                            data.marksObtained = questions[i].marks
+                        }
+                        else if ((questions[i].answer) != data.submittedAnswer && data.submittedAnswer != null) {
+                            totalMarks -= questions[i].negative
+                            data.marksObtained = -questions[i].negative
+                        }
+                        else if (data.submittedAnswer == null) {
+                            data.marksObtained = 0
+                        }
+                
+                
+            }
+        
+    })
+                    
+    }
+}
+    console.log(totalMarks)
+    var temp = {}
+    temp.submissionId = item._id
+    try {
+        const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
+        temp.status= true
+        temp.data = updateQuery
+        
+    }
+    catch (err) {
+        console.log(err)
+        temp.status = false
+        temp.error = err
+    }
+
+        })
+        res.json({status : true})
+    }
+    
+    catch (err){
+        console.log(err)
+    }
+})
+
 module.exports=router
 
