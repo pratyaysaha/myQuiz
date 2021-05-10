@@ -54,12 +54,12 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         port: 465,
         secure : true,
         auth: {
-           user: 'startechchannel@gmail.com',
+           user: 'submission.myquiz@gmail.com',
            pass: `${process.env.EMAIL_PASS}`
         }
     });
     const message = {
-        from: 'startechchannel@gmail.com', 
+        from: 'submission.myquiz@gmail.com', 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
         text: `Total Score: ${submits[0].totalMarks}`
