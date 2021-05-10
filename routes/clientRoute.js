@@ -29,7 +29,7 @@ router.get('/:quizid',async (req,res)=>{
     }
 })
 router.get('/:quizname',async(req, res)=>{
-
+    //quizname route to be added
 })
 
 
