@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 require('dotenv/config')
 const router= express.Router()
 
+
 var transport = nodemailer.createTransport({
     host : 'smtp.yandex.com',
     port: 465,
@@ -21,6 +22,8 @@ router.get('/:quizid',async (req,res)=>{
     try{
         const quizDetails=await QuizDetails.findById(req.params.quizid)
         const questions=await Questions.find({quizId: req.params.quizid},{answer : 0})
+        console.log(quizDetails)
+      
         sendQuestion=[]
         questions.map((item)=>{
             var data={}
@@ -29,8 +32,22 @@ router.get('/:quizid',async (req,res)=>{
             data.options=item.options
             sendQuestion.push(data); 
         })
+        
+    
+        if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime){
+           
         res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
+        
+       
+       
     }
+
+
+  
+    else{
+        res.send("Quiz not available")
+    }
+}
     catch(err)
     {
         console.log("err");
@@ -55,19 +72,21 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         const submits = await Submit.find({ _id: req.params.submissionId })
         console.log(submits)
         console.log(submits[0].Email)
+
     const message = {
         from: process.env.EMAIL, 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
         text: `Total Score: ${submits[0].totalMarks}`
-    };
+    }
+
     transport.sendMail(message, function(err, info) {
         if (err) {
           console.log(err)
         } else {
           console.log(info);
         }
-    });
+    })
 }
 catch(err){
     console.log(err)

@@ -46,6 +46,7 @@
             type: Date,
             default: new Date(),
             required: true
+            
         },
         totalMarks:{
             type : Number,
