@@ -7,7 +7,15 @@ const fetch = require('node-fetch');
 require('dotenv/config')
 const router= express.Router()
 
-
+var transport = nodemailer.createTransport({
+    host : 'smtp.yandex.com',
+    port: 465,
+    secure : true,
+    auth: {
+       user: process.env.EMAIL,
+       pass: process.env.EMAIL_PASS
+    }
+});
 
 router.get('/:quizid',async (req,res)=>{
     try{
@@ -47,19 +55,8 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         const submits = await Submit.find({ _id: req.params.submissionId })
         console.log(submits)
         console.log(submits[0].Email)
-
-
-    var transport = nodemailer.createTransport({
-        host : 'smtp.gmail.com',
-        port: 465,
-        secure : true,
-        auth: {
-           user: 'submission.myquiz@gmail.com',
-           pass: `${process.env.EMAIL_PASS}`
-        }
-    });
     const message = {
-        from: 'submission.myquiz@gmail.com', 
+        from: process.env.EMAIL, 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
         text: `Total Score: ${submits[0].totalMarks}`
