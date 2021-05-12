@@ -99,21 +99,20 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         const submits = await Submit.find({ _id: req.params.submissionId })
         console.log(submits)
         console.log(submits[0].Email)
-        // var add = 0
-
-        // submits[0].Answers.map(async(item)=>{
-        //     console.log(item)
-        //     const marking = await Questions.findOne({_id : item.quesId})
-        //     // console.log(marking.marks)
-        //     add+=marking.marks
-        //     console.log(add)
-        // })
-        // console.log(add)
+        var add = 0
+        
+        for(let i=0;i<submits[0].Answers.length;i++){
+            const marking = await Questions.findOne({_id : submits[0].Answers[i].quesId})
+            add+=marking.marks
+        
+        }
+        console.log(add)
+        
     const message = {
         from: process.env.EMAIL, 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
-        text: `Total Score: ${submits[0].totalMarks}`
+        text: `Total Score: ${submits[0].totalMarks}/${add}`
     }
 
     transport.sendMail(message, function(err, info) {
