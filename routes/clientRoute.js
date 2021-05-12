@@ -36,26 +36,25 @@ router.get('/:quizid',async (req,res)=>{
     
         if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime){
            
-        res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
-        
+            res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
        
-       
+        }
+        else{
+             res.send("Quiz not available")
+         }
     }
-
-
-  
-    else{
-        res.send("Quiz not available")
-    }
-}
     catch(err)
     {
         console.log("err");
     }
 })
-router.get('/:quizname',async(req, res)=>{
-    //quizname route to be added
-})
+
+
+
+// router.get('/:quizname/:quizid',async(req, res)=>{
+//   console.log(req.params.quizname)
+//   console.log(req.params.quizid)
+// })
 
 
 
@@ -73,7 +72,16 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         console.log(submits)
         console.log(submits[0].Email)
 
+        // var add = 0
 
+        // submits[0].Answers.map(async(item)=>{
+        //     console.log(item)
+        //     const marking = await Questions.findOne({_id : item.quesId})
+        //     // console.log(marking.marks)
+        //     add+=marking.marks
+        //     console.log(add)
+        // })
+        // console.log(add)
     
     const message = {
         from: `${process.env.EMAIL}`, 
