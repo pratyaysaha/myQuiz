@@ -13,10 +13,10 @@ var transport = nodemailer.createTransport({
     port: 465,
     secure : true,
     auth: {
-       user: `${process.env.EMAIL}`,
-       pass: `${process.env.EMAIL_PASS}`
+       user: process.env.EMAIL,
+       pass: process.env.EMAIL_PASS
     }
-})
+});
 
 router.get('/:quizid',async (req,res)=>{
     try{
@@ -73,10 +73,8 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         console.log(submits)
         console.log(submits[0].Email)
 
-
-    
     const message = {
-        from: `${process.env.EMAIL}`, 
+        from: process.env.EMAIL, 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
         text: `Total Score: ${submits[0].totalMarks}`
