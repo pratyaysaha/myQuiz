@@ -304,7 +304,16 @@
             body:JSON.stringify(data),
         }).then((Response)=>Response.json())
         .then((back)=>{
-            console.log(back)
+            if(back.status)
+            {
+                document.getElementsByClassName(`button add-ques q${val}`)[0].innerHTML=`<div class="button-label">
+                    <i class="fa fa-pen" aria-hidden="true"></i>
+                    </div>`
+            }
+            else
+            {
+                alert('Question unable to upload.\nTry again!!!')
+            }
         })
         console.log(data)        
     }
