@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 require('dotenv/config')
 const router= express.Router()
 
+
 var transport = nodemailer.createTransport({
     host : 'smtp.yandex.com',
     port: 465,
@@ -32,11 +33,16 @@ router.get('/:quizid',async (req,res)=>{
             sendQuestion.push(data); 
         })
         
-        
+    
         if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime){
            
         res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
+        
+       
+       
     }
+
+
   
     else{
         res.send("Quiz not available")

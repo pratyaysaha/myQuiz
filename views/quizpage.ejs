@@ -169,5 +169,13 @@
                 }
         })
     }
+    const mytime=()=>{
+        if(Date.now()>= new Date(`<%=data.quizDetails.etime%>`)){
+            submit()
+            clearInterval(settime)
+        }
+        
+    }
+    var settime=setInterval(mytime,1000)
 </script>
 </html>
