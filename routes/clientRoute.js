@@ -13,10 +13,10 @@ var transport = nodemailer.createTransport({
     port: 465,
     secure : true,
     auth: {
-       user: `${process.env.EMAIL}`,
-       pass: `${process.env.EMAIL_PASS}`
+       user: process.env.EMAIL,
+       pass: process.env.EMAIL_PASS
     }
-})
+});
 
 router.get('/:quizid',async (req,res)=>{
     try{
@@ -51,10 +51,38 @@ router.get('/:quizid',async (req,res)=>{
 
 
 
-// router.get('/:quizname/:quizid',async(req, res)=>{
-//   console.log(req.params.quizname)
-//   console.log(req.params.quizid)
-// })
+router.get('/name/:quizname',async(req, res)=>{
+  console.log(req.params.quizname)
+  try{
+    const quizDetails=await QuizDetails.find({name:req.params.quizname})
+    const questions=await Questions.find({quizId: quizDetails[0]._id},{answer : 0})
+    console.log(quizDetails[0]._id)
+    console.log(questions)
+  
+    sendQuestion=[]
+    questions.map((item)=>{
+        var data={}
+        data._id=item._id
+        data.ques=item.ques
+        data.options=item.options
+        sendQuestion.push(data); 
+    })
+    
+
+    if(Date.now()>=quizDetails[0].stime&&Date.now()<=quizDetails[0].etime){
+       
+        res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
+   
+    }
+    else{
+         res.send("Quiz not available")
+     }
+}
+catch(err)
+{
+    console.log("err");
+}
+})
 
 
 
@@ -71,7 +99,6 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         const submits = await Submit.find({ _id: req.params.submissionId })
         console.log(submits)
         console.log(submits[0].Email)
-
         // var add = 0
 
         // submits[0].Answers.map(async(item)=>{
@@ -82,9 +109,8 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         //     console.log(add)
         // })
         // console.log(add)
-    
     const message = {
-        from: `${process.env.EMAIL}`, 
+        from: process.env.EMAIL, 
         to: submits[0].Email,         
         subject: 'Submission Succesfull', 
         text: `Total Score: ${submits[0].totalMarks}`

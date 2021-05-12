@@ -79,6 +79,93 @@ router.post('/create/:id', async (req,res)=>{
     res.json(status)
 })
 
+
+router.patch('/create/:id', async (req,res)=>{
+    var status={}
+    var response= await validateQuizID(req.params.id)
+    if(response==false)
+    {
+        status.status=false
+        status.code=12
+    }
+    else
+    {
+        status.status=true
+     
+        var setQuery={}
+    if(req.body.name)
+        setQuery.name=req.body.name
+    if(req.body.author)
+        setQuery.author=req.body.author
+    if(req.body.email)
+        setQuery.email=req.body.email
+    if(req.body.dot)
+        setQuery.dot=req.body.dot
+    if(req.body.stime)
+        setQuery.stime=req.body.stime
+    if(req.body.etime)
+        setQuery.etime=req.body.etime
+            
+    console.log(setQuery)
+        try{
+            const quizSubmit= await Quiz.updateOne({_id:req.params.id}, setQuery);
+            status.data=quizSubmit;
+          
+        console.log(quizSubmit)
+        }
+        catch(err){
+            status.status=false;
+            status.code=15;
+        }
+    }
+    res.json(status)
+})
+
+router.patch('/questions/:quesId', async (req,res)=>{
+    var status={}
+    try{
+        status.status=true
+     
+        var setQuery={}
+    if(req.body.ques)
+        setQuery.ques=req.body.ques
+    if(req.body.options)
+        setQuery.options=req.body.options
+    if(req.body.addoption)
+        setQuery.$push={}
+    if(req.body.addoption)
+        setQuery.$push.options= {'$each': req.body.addoption}
+    if(req.body.removeoption)
+        setQuery.$pull={}
+    if(req.body.removeoption)
+        setQuery.$pull.options={'$all' : req.body.removeoption }
+    if(req.body.answer)
+        setQuery.answer=req.body.answer
+    if(req.body.marks)
+        setQuery.marks=req.body.marks
+    if(req.body.isNegative)
+        setQuery.isNegative=req.body.isNegative
+    if(req.body.negative)
+        setQuery.negative=req.body.negative
+            
+    console.log(setQuery)
+        try{
+            const quesSubmit= await Question.updateOne({_id:req.params.quesId}, setQuery);
+            status.data=quesSubmit;
+          
+        console.log(quesSubmit)
+        }
+        catch(err){
+            status.status=false;
+            status.code=15;
+        }
+    }
+    catch(err){
+        console.log("error")
+    }
+    res.json(status)
+})
+
 router.get("/assessment", async (req, res) => {
     q={}
     try{
