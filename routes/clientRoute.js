@@ -100,7 +100,8 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         console.log(submits)
         console.log(submits[0].Email)
         var add = 0
-        
+        const quizName = await QuizDetails.findOne({_id:submits[0].quizId})
+        console.log(quizName.name)
         for(let i=0;i<submits[0].Answers.length;i++){
             const marking = await Questions.findOne({_id : submits[0].Answers[i].quesId})
             add+=marking.marks
@@ -111,8 +112,41 @@ router.get('/:submissionId/success' ,async(req, res)=>{
     const message = {
         from: process.env.EMAIL, 
         to: submits[0].Email,         
-        subject: 'Submission Succesfull', 
-        text: `Total Score: ${submits[0].totalMarks}/${add}`
+        subject: 'Submission Sucessfull', 
+        html: `
+        <div style="width: 100%;
+        height: 65px;
+        background-color: aquamarine;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: royalblue;">
+            <div style="padding-left: 20px;">
+                <div style="font-size: 30px;
+                color :salmon;">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div style="font-size: 25px;
+                font-family: 'Raleway', sans-serif;
+                font-weight:bold; padding-top:15px; color:salmon;">
+                    My Quiz
+                </div>
+            </div>
+        </div>
+        <h1>${quizName.name}</h1>
+        <h1>Total score: ${submits[0].totalMarks}/${add}</h1>
+        <div style="background-color: royalblue;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        font-size: 18px;
+        font-family: 'Raleway', sans-serif; padding-bottom:5px;">
+    <div style="padding:10px; color:white;">
+        Made with <span style="color : red;">❤</span> by MyQuiz@2021
+    </div>
+</div>`
     }
 
     transport.sendMail(message, function(err, info) {

@@ -93,17 +93,11 @@ router.patch('/create/:id', async (req,res)=>{
         status.status=true
      
         var setQuery={}
-    if(req.body.name)
         setQuery.name=req.body.name
-    if(req.body.author)
         setQuery.author=req.body.author
-    if(req.body.email)
         setQuery.email=req.body.email
-    if(req.body.dot)
         setQuery.dot=req.body.dot
-    if(req.body.stime)
         setQuery.stime=req.body.stime
-    if(req.body.etime)
         setQuery.etime=req.body.etime
             
     console.log(setQuery)
@@ -127,25 +121,12 @@ router.patch('/questions/:quesId', async (req,res)=>{
         status.status=true
      
         var setQuery={}
-    if(req.body.ques)
+    
         setQuery.ques=req.body.ques
-    if(req.body.options)
         setQuery.options=req.body.options
-    if(req.body.addoption)
-        setQuery.$push={}
-    if(req.body.addoption)
-        setQuery.$push.options= {'$each': req.body.addoption}
-    if(req.body.removeoption)
-        setQuery.$pull={}
-    if(req.body.removeoption)
-        setQuery.$pull.options={'$all' : req.body.removeoption }
-    if(req.body.answer)
         setQuery.answer=req.body.answer
-    if(req.body.marks)
         setQuery.marks=req.body.marks
-    if(req.body.isNegative)
         setQuery.isNegative=req.body.isNegative
-    if(req.body.negative)
         setQuery.negative=req.body.negative
             
     console.log(setQuery)
