@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+.container
+{
+    padding-left: 20px;
+    padding-top: 30px;
+}
+.quiz-select-container
+{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.quiz-select-container>div{
+    padding-right: 40px;
+    font-size: 20px;
+    font-family: 'Raleway', sans-serif;
+    color: salmon;
+}
+.quiz-select
+{
+    width: 30%;
+}
+.allquiz-select
+{
+    font-size: 18px;
+    font-family: 'Raleway', sans-serif;
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+    color: white;
+    border: none;
+    width: 100%;
+}
+.border
+{
+    border-bottom: 2px solid rgb(185, 11, 156);
+}
+.submission-container
+{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.submission-label,.submissions-number
+{
+    color:salmon;
+    font-family: 'Raleway',sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+.submissions-number
+{
+    color: white;
+}
+.submissions
+{
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px;
+}
+.content
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 50px;
+    background-color: rgb(70, 71, 71);
+    width: 95%;
+    font-size: 18px;
+    font-family: 'Raleway',sans-serif;
+}
+.submission
+{
+    height: 70px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.name
+{
+    width: 35%;
+}
+.email
+{
+    width: 40%;
+}
+.marks
+{
+    width: 15%;
+}
+
+.submission-details
+{
+    display: flex;
+}
+.submission-details > div
+{
+    padding-right: 30px;
+}

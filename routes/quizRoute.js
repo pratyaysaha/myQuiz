@@ -112,6 +112,15 @@ router.get("/getsubmission", async (req, res) => {
         res.json({'status': false, 'error' : err, 'code': 103})
     }
 })
+router.get('/submissions/:quizid',async(req,res)=>{
+    try{
+        const submissions=await Submit.find({quizId: req.params.quizid},{Answers:0})
+        res.json({'status': true, 'data': submissions})
+    }
+    catch(err){
+        res.json({'status': false, 'error' : err, code: 104})
+    }
+})
 
 router.post('/assessment/:quizid',async (req,res)=>{
     var status={}

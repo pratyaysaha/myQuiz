@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                             <div class="options q<%=qno%>">
-                                <div class="button add-ques q<%=qno%>" onclick="addQuestion(`<%=qno%>`)">
+                                <div class="button add-ques q<%=qno%>" onclick="editQuestion(`<%=qno%>`)">
                                     <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
                                 </div>
                             </div>
@@ -270,6 +270,15 @@
         {
             data.isNegative=true
         }
+        for (x in data)
+        {
+            if(data[x]==='')
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+            
+        }
         const url=`${window.location.origin}/api/create/${quizid}`
         await fetch(url,{
             method:'POST',
@@ -292,5 +301,36 @@
             }
         })    
     }
+    const editQuestion= async (val)=>{
+        var data={}
+        data.ques=document.querySelector(`.input.ques.q${val}`).value
+        var choices= document.getElementsByClassName(`input ichoice q${val}`)
+        var options=[]
+        for(i=0;i<choices.length;i++)
+        {
+            options.push(choices[i].value)
+        }
+        data.options=options
+        var info=document.getElementsByClassName(`input info q${val}`)
+        data.marks=Number(info[0].value)
+        data.negative=Number(info[1].value)
+        data.answer=info[2].value
+        data.quizId=quizid
+        data.isNegative=false
+        if(data.negative>0)
+        {
+            data.isNegative=true
+        }
+        for (x in data)
+        {
+            if(data[x]==='')
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+            
+        }
+        console.log(data)
+    }   
 </script>
 </html>
