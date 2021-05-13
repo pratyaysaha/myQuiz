@@ -34,15 +34,15 @@ router.get('/:quizid',async (req,res)=>{
         })
         
     
-        if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime){
+        if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime)
+        {
            
-            res.render("quizpage",{data : {quizDetails, questions: sendQuestion}})
-       
-        }
+            res.render("quizpage",{data : {quizDetails, questions: sendQuestion},timelimit: true})
+        }  
         else{
-             res.send("Quiz not available")
-         }
-    }
+            res.send("Quiz not available")
+        }
+}
     catch(err)
     {
         console.log("err");
@@ -82,6 +82,28 @@ catch(err)
 {
     console.log("err");
 }
+})
+
+router.get('/admin/:quizid',async (req,res)=>{
+    try{
+        const quizDetails=await QuizDetails.findById(req.params.quizid)
+        const questions=await Questions.find({quizId: req.params.quizid},{answer : 0})
+        console.log(quizDetails)
+      
+        sendQuestion=[]
+        questions.map((item)=>{
+            var data={}
+            data._id=item._id
+            data.ques=item.ques
+            data.options=item.options
+            sendQuestion.push(data); 
+        })
+        res.render("quizpage",{data : {quizDetails, questions: sendQuestion},timelimit : false})
+}
+    catch(err)
+    {
+        console.log("err");
+    }
 })
 
 
@@ -163,5 +185,16 @@ catch(err){
 
 })
 
+router.get('/edit/:quizid', async (req,res)=>{
+    try{
+        const quizDetails=await QuizDetails.findById(req.params.quizid)
+        const questions=await Questions.find({quizId: req.params.quizid})
+        res.render('editquiz',{quizDetails,questions})
+    }
+    catch(err)
+    {
+        console.log(err)
+    }
+})
 
 module.exports=router

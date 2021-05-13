@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit:<%=quizDetails.name%></title>
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href='/createquiz.css'>
-    <link rel="stylesheet" href='/newquiz.css'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Quiz</title>
+    <link rel="stylesheet" href='/editquiz.css'>
+    
 </head>
-<body>
-    <%  var qno=0 %>
-    <%- include('../views/header') %>
+<body>  
+    <%-include('../views/header')%>
     <div class="content-container">
         <%- include('../views/sidebar',{select : "newquiz"}) %>
         <div class="container">
@@ -20,42 +19,45 @@
                 <div class="quiz-name">
                     <div class="inside-label">Quiz name<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input qname" type="text" value="">
+                        <input class="input qname" type="text" value="<%=quizDetails.name%>">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="author-name">
                     <div class="inside-label">Author name<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input aname" type="text" value="">
+                        <input class="input aname" type="text" value="<%=quizDetails.author%>">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="author-email">
                     <div class="inside-label">Email<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input email" type="text" value="" onblur="validEmail(this.value)">
+                        <input class="input email" type="text" value="<%=quizDetails.authorEmail%>" onblur="validEmail(this.value)">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="start-quiz">
                     <div class="inside-label">Start time<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input stime" type="datetime-local" value="">
+                        <% var dt=quizDetails.stime
+                            var dtiso=new Date(dt).toISOString().replace('Z', '')
+                        %>
+                        <input class="input stime" type="datetime-local" value="<%=dtiso%>">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="end-quiz">
                     <div class="inside-label">End time<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input etime" type="datetime-local" value="">
+                        <% var dt=quizDetails.etime
+                            var dtiso=new Date(dt).toISOString().replace('Z', '')
+                         %>
+                        <input class="input etime" type="datetime-local" value="<%=dtiso%>">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="submit">
-                    <div class="button submit" onclick="create()">
-                        <div class="button-label">Create</div>
-                    </div>
                     <div class="button update-create" onclick="updateCreate()">
                         <div class="button-label">Update</div>
                     </div>
@@ -66,71 +68,87 @@
                     <div class="question-label">
                         Questions
                     </div>
-                    <div class="question q<%=qno%>">
-                        <div class="input-ques">
-                            <input class="input ques q<%=qno%>" type="text" placeholder="Question" value="">
-                            <div class="border"></div>
-                        </div>
-                        <div class="choices q<%=qno%>">
-                            <div class="choices-label">
-                                <div class="content">
-                                    Choices
-                                </div>
-                                <div class="button add-option" id='<%=qno%>' onclick="addchoice(`<%=qno%>`)">
-                                    <div class="button-label"><i class="fa fa-plus" aria-hidden="true"></i></div>
-                                </div>
-                                <div class="button add-option" id='<%=qno%>' onclick="removechoice(`<%=qno%>`)">
-                                    <div class="button-label"><i class="fa fa-minus" aria-hidden="true"></i></div>
-                                </div>
-                            </div>
-                            <div class="choice q<%=qno%>">
-                                <input class="input ichoice q<%=qno%>" type="text" placeholder="option" value="" onblur="addanskey(`<%=qno%>`)">
+                    <% qno=0 %>
+                    <% questions.map((item)=>{ %>
+                        <div class="question q<%=qno%>"  id="<%=item._id%>">
+                            <div class="input-ques">
+                                <input class="input ques q<%=qno%>" type="text" placeholder="Question" value="<%=item.ques%>">
                                 <div class="border"></div>
                             </div>
-                        </div>
-                        <div class="info">
-                            <div class="total-marks">
-                                <div class="info-label">Marks</div>
-                                <div>
-                                    <input class="input info q<%=qno%>" type="number" placeholder="" value="" min="0">
-                                    <div class="border"></div>
+                            <div class="choices q<%=qno%>">
+                                <div class="choices-label">
+                                    <div class="content">
+                                        Choices
+                                    </div>
+                                    <div class="button add-option" id='<%=qno%>' onclick="addchoice(`<%=qno%>`)">
+                                        <div class="button-label"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div class="button add-option" id='<%=qno%>' onclick="removechoice(`<%=qno%>`)">
+                                        <div class="button-label"><i class="fa fa-minus" aria-hidden="true"></i></div>
+                                    </div>
                                 </div>
-                            
+                                <%item.options.map((option)=>{%>
+                                    <div class="choice q<%=qno%>">
+                                        <input class="input ichoice q<%=qno%>" type="text" placeholder="option" value="<%=option%>" onblur="addanskey(`<%=qno%>`)">
+                                        <div class="border"></div>
+                                    </div>
+                                <%})%>
                             </div>
-                            <div class="negative"> 
-                                <div class="info-label">Negative</div>
-                                 <div>
-                                    <input class="input info q<%=qno%>" type="number" placeholder="" value="0" min="0">
-                                    <div class="border"></div>
-                                 </div>
+                            <div class="info">
+                                <div class="total-marks">
+                                    <div class="info-label">Marks</div>
+                                    <div>
+                                        <input class="input info q<%=qno%>" type="number" placeholder="" value="<%=item.marks%>" min="0">
+                                        <div class="border"></div>
+                                    </div>
+                                
+                                </div>
+                                <div class="negative"> 
+                                    <div class="info-label">Negative</div>
+                                     <div>
+                                        <input class="input info q<%=qno%>" type="number" placeholder="" value="<%=item.negative%>" min="0">
+                                        <div class="border"></div>
+                                     </div>
+                                </div>
+                                <div class="anskey"> 
+                                    <div class="info-label">Answer Key</div>
+                                    <div>
+                                        <select class="input info q<%=qno%>">
+                                            <%item.options.map((option)=>{%>
+                                                <%if(option===item.answer){%>
+                                                    <option value="<%=option%>" selected style="color:black;"><%=option%></option>
+                                                <%}
+                                                else{%>
+                                                    <option value="<%=option%>" style="color:black;"><%=option%></option>
+                                                <%}%>
+                                            <%})%>
+                                        </select>
+                                        <div class="border"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="anskey"> 
-                                <div class="info-label">Answer Key</div>
-                                <div>
-                                    <select class="input info q<%=qno%>"></select>
-                                    <div class="border"></div>
+                            <div class="options q<%=qno%>">
+                                <div class="button add-ques q<%=qno%>" onclick="addQuestion(`<%=qno%>`)">
+                                    <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="options q<%=qno%>">
-                            <div class="button add-ques q<%=qno%>" onclick="addQuestion(`<%=qno%>`)">
-                                <div class="button-label"><i class="fa fa-plus" aria-hidden="true"></i></div>
-                            </div>
-                        </div>
+                        <%qno++%>
+                    <% }) %>
                     </div>
-                </div>
-                <div class="new-ques">
-                    <div class="button add-new" onclick="newquestion(`<%=qno%>`)">
-                        <div class="button-label">New</div>
+                    <div class="new-ques">
+                        <div class="button add-new" onclick="newquestion(`<%=qno%>`)">
+                            <div class="button-label">New</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <%- include('../views/footer') %>
+    <%-include('../views/footer')%>
 </body>
 <script>
-    var quizid="609982913226e274080c1ac4"
+    var quizid=`<%=quizDetails._id%>`
     const validEmail=(email)=>{
         var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
         if(email.match(mailformat))
@@ -145,51 +163,9 @@
             return false;
         }
     }
-    const create=async()=>{
-        const url=`${window.location.origin}/api/create`
-        const data={}
-        data.name=document.querySelector('.input.qname').value
-        data.author=document.querySelector('.input.aname').value
-        data.authorEmail=document.querySelector('.input.email').value
-        data.dot=new Date()
-        data.stime=new Date(document.querySelector('.input.stime').value)
-        data.etime=new Date(document.querySelector('.input.etime').value)
-        for(x in data)
-        {
-            if(data[x]==="")
-            {
-                alert('Fill up the empty slots')
-                return
-            }
-        }
-        fetch(url,{
-            method:'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body:JSON.stringify(data),
-        })
-            .then((Response)=>Response.json())
-            .then((data)=>{
-                if(data.status)
-                    {
-                        quizid=data.data._id
-                        document.querySelector('.button.submit').style.display='none'
-                        document.querySelector('.button.update-create').style.display='flex'
-                        document.querySelector('.button.add-new').style.display='flex'
-                        document.querySelector('.question-creation').style.display='block'
-                        alert('Success')
-                    }
-                else
-                {
-                    alert('Failed')
-                }
-            })
-    }
     const addanskey=(val)=>{
         var choices= document.getElementsByClassName(`input ichoice q${val}`)
         var anskey=document.getElementsByClassName(`input info q${val}`)[2]
-        console.log(anskey)
         anskey.innerHTML=""
         for(i=0;i<choices.length;i++)
         {
@@ -198,7 +174,6 @@
             anskey.add(option)
         }
     }
-
     const addchoice=(val)=>{
         var element=document.querySelector(`.choices.q${val}`)
         console.log(element)
@@ -217,7 +192,7 @@
         if(elefocus.length==0){return}
         elefocus[elefocus.length-1].focus()
     }
-    var val=1;
+    var val=Number(`<%=qno%>`)
     const newquestion=()=>{
         document.querySelector('.questions').insertAdjacentHTML("beforeend",`<div class="question q${val}">
                         <div class="input-ques">
@@ -315,8 +290,7 @@
             {
                 alert('Question unable to upload.\nTry again!!!')
             }
-        })
-        console.log(data)        
+        })    
     }
 </script>
 </html>

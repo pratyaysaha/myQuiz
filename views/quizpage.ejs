@@ -126,7 +126,12 @@
         if(name===''|| email==='' || !validEmail(email))
         {
             alert('Fill up the required fields!!')
-            return 
+            if(state==='normal')
+                return
+            else
+                {
+                    console.log('off')
+                } 
         }
         submit.candidate=name
         submit.Email=email
@@ -169,13 +174,17 @@
                 }
         })
     }
+    var time=`<%=timelimit%>`    
     const mytime=()=>{
         if(Date.now()>= new Date(`<%=data.quizDetails.etime%>`)){
-            submit()
-            clearInterval(settime)
+            submit();
         }
-        
     }
-    var settime=setInterval(mytime,1000)
+    if(time==='true')
+    {
+        var settime=setInterval(mytime,1000)
+    }
+    
+    
 </script>
 </html>
