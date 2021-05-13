@@ -32,6 +32,7 @@ router.get('/',(req,res)=>{
 router.post('/create',async (req,res)=>{
     console.log(req.body)
     const quizdet=new Quiz({
+        // userId : req.body.userId,
         name: req.body.name,
         author:req.body.author,
         authorEmail: req.body.authorEmail,

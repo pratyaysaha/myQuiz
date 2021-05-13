@@ -1,6 +1,11 @@
 const mongoose=require('mongoose')
 const validator=require('validator')
 const QuizDetails= mongoose.Schema({
+    // userId:{
+    //     type: String,
+    //     required : true,
+    //     unique: true
+    // },
     name:{
         type :String,
         required: true,
