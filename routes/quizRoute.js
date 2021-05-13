@@ -79,6 +79,74 @@ router.post('/create/:id', async (req,res)=>{
     res.json(status)
 })
 
+
+router.patch('/create/:id', async (req,res)=>{
+    var status={}
+    var response= await validateQuizID(req.params.id)
+    if(response==false)
+    {
+        status.status=false
+        status.code=12
+    }
+    else
+    {
+        status.status=true
+     
+        var setQuery={}
+        setQuery.name=req.body.name
+        setQuery.author=req.body.author
+        setQuery.email=req.body.email
+        setQuery.dot=req.body.dot
+        setQuery.stime=req.body.stime
+        setQuery.etime=req.body.etime
+            
+    console.log(setQuery)
+        try{
+            const quizSubmit= await Quiz.updateOne({_id:req.params.id}, setQuery);
+            status.data=quizSubmit;
+          
+        console.log(quizSubmit)
+        }
+        catch(err){
+            status.status=false;
+            status.code=15;
+        }
+    }
+    res.json(status)
+})
+
+router.patch('/questions/:quesId', async (req,res)=>{
+    var status={}
+    try{
+        status.status=true
+     
+        var setQuery={}
+    
+        setQuery.ques=req.body.ques
+        setQuery.options=req.body.options
+        setQuery.answer=req.body.answer
+        setQuery.marks=req.body.marks
+        setQuery.isNegative=req.body.isNegative
+        setQuery.negative=req.body.negative
+            
+    console.log(setQuery)
+        try{
+            const quesSubmit= await Question.updateOne({_id:req.params.quesId}, setQuery);
+            status.data=quesSubmit;
+          
+        console.log(quesSubmit)
+        }
+        catch(err){
+            status.status=false;
+            status.code=15;
+        }
+    }
+    catch(err){
+        console.log("error")
+    }
+    res.json(status)
+})
+
 router.get("/assessment", async (req, res) => {
     q={}
     try{
