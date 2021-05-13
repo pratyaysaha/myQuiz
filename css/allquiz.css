@@ -29,12 +29,12 @@
 .name{
     width: 40%;
 }
-.name>a{
+.link-quiz>a{
     text-decoration: none;
     color: orange;
 
 }
-.name>a:hover{
+.link-quiz>a:hover{
     color:orchid;
 }
 .copy-link{
@@ -45,4 +45,9 @@
 {
     cursor: pointer;
     color: orchid;
+}
+.edit:hover
+{
+    color:orchid;
+    cursor: pointer;
 }

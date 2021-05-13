@@ -100,7 +100,7 @@ input::-webkit-calendar-picker-indicator {
 }
 .button.update-create
 {
-    display: none;
+    display: flex;
 }
 
 .new-ques
@@ -110,7 +110,7 @@ input::-webkit-calendar-picker-indicator {
 }
 .button.add-new
 {
-    /*display : none;*/
+    display : flex;
 }
 .button.add-option
 {
@@ -127,7 +127,7 @@ input::-webkit-calendar-picker-indicator {
 {
     padding-top: 20px;
     padding-left: 20px;
-    display: none; 
+    display: block; 
     /*to be turned*/
 }
 .question

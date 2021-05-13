@@ -26,7 +26,7 @@ app.get('/newquiz',async (req,res)=>{
     res.render('newquiz')
 })
 app.get('/evaluation',async (req,res)=>{
-    res.render('newquiz')
+    res.render('evaluation')
 })
 
 mongoose.connect(process.env.DB_CONNECTION,{ 

@@ -26,6 +26,12 @@
             document.querySelector('.menu-label.newquiz').style.color='rgb(185, 11, 156)'
             document.querySelector('.menu-label.evaluation').style.color='white'
         }
+        else if(option==='evaluation')
+        {
+            document.querySelector('.menu-label.allquiz').style.color='white'
+            document.querySelector('.menu-label.newquiz').style.color='white'
+            document.querySelector('.menu-label.evaluation').style.color='rgb(185, 11, 156)'
+        }
     }
     const navigate=(path)=>{
         if(path==='allquiz')
