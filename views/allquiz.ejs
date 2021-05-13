@@ -7,11 +7,16 @@
         <% data.map((item)=>{ %>
             <div class="quiz">
                 <div class="name">
-                    <a href="/quiz/<%= item._id %>">
-                        <div class="link-quiz">
+                    <div class="link-quiz">
+                        <a href="/quiz/admin/<%= item._id %>">
                             <%=item.name%>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
+                </div>
+                <div class="edit" onclick="editpage(`<%=item._id%>`)">
+                    <div class="button-edit">
+                        <i class="fa fa-pen" aria-hidden="true"></i>
+                    </div>
                 </div>
                 <div class="copy-link" id=<%=item._id%> onclick="copyText(`<%=item._id%>`)">
                     Reveal the link
@@ -23,5 +28,9 @@
 <script>
     const copyText=(id)=>{
         document.getElementById(id).innerHTML=`${window.location.origin}/quiz/${id}`
+        navigator.clipboard.writeText(`${window.location.origin}/quiz/${id}`)
+    }
+    const editpage=(id)=>{
+        location.assign(`${window.location.origin}/quiz/edit/${id}`)
     }
 </script>
