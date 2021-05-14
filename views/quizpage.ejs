@@ -79,7 +79,7 @@
                 <div class="options">
                     <% item.options.map((item2, index)=>{ %>
                         <div class="option">
-                            <input type="radio" class="<%= item._id+' '+index %>" value=<%=item2%> name=<%=item._id%>>
+                            <input type="radio" class="<%= item._id+' '+index %>" value="<%=item2%>" name="<%=item._id%>">
                             <span class= option-label><%= item2 %></span>
                         </div>
                    <%})%>
@@ -155,8 +155,6 @@
         })
         submit.Answers=submission
         submit.submittedTime=new Date()
-        console.log(submission)
-        console.log(submit)
         const url= `${window.location.origin}/api/assessment/<%=data.quizDetails._id%>`
         fetch(url,{
             method:'POST',
@@ -176,7 +174,7 @@
                 {
                     alert("Retry!!")
                 }
-        })
+        }) 
     }
     var time=`<%=timelimit%>`    
     const mytime=()=>{
