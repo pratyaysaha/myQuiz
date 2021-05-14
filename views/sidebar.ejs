@@ -12,6 +12,7 @@
     </div>
 </div>
 <script>
+    console.log(`<%=select%>`)
     window.onload=()=>{
         var option=`<%=select%>`
         if(option==='allquiz')
@@ -22,6 +23,7 @@
         }
         else if(option==='newquiz')
         {
+            console.log('hi2')
             document.querySelector('.menu-label.allquiz').style.color='white'
             document.querySelector('.menu-label.newquiz').style.color='rgb(185, 11, 156)'
             document.querySelector('.menu-label.evaluation').style.color='white'
@@ -38,5 +40,19 @@
             location.assign(`${window.location.origin}`)
         else
             location.assign(`${window.location.origin}/${path}`)
+    }
+    var state=false
+    const showMenu=()=>{
+        
+        if(!state)
+        {
+            document.querySelector('.sidebar-container').style.display='block'
+            state=true
+        }
+        else
+        {
+            document.querySelector('.sidebar-container').style.display='none'
+            state=false
+        }
     }
 </script>

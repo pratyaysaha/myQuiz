@@ -4,33 +4,79 @@
         Quizes
     </div>
     <div class="quiz-list">
-        <% data.map((item)=>{ %>
-            <div class="quiz">
+       
+    </div>
+</div>
+<script>
+    const getQuizes= async ()=>{
+        var received
+        const url=`${window.location.origin}/api/quizes`
+        await fetch(url)
+            .then((Response)=>Response.json())
+            .then((back)=>{
+                console.log(back)
+                if(back.status)
+                {
+                    console.log(back.data)
+                    received=back.data
+                }
+            })
+        received.map((item)=>{
+            document.querySelector('.quiz-list').insertAdjacentHTML("beforeend",`<div class="quiz" id="${item._id}">
                 <div class="name">
                     <div class="link-quiz">
-                        <a href="/quiz/admin/<%= item._id %>">
-                            <%=item.name%>
+                        <a href="/quiz/admin/${item._id}">
+                            ${item.name}
                         </a>
                     </div>
                 </div>
-                <div class="edit" onclick="editpage(`<%=item._id%>`)">
+                <div class="edit" onclick="editpage('${item._id}')">
                     <div class="button-edit">
                         <i class="fa fa-pen" aria-hidden="true"></i>
                     </div>
                 </div>
-                <div class="copy-link" id=<%=item._id%> onclick="copyText(`<%=item._id%>`)">
+                <div class="edit" onclick="deletequiz('${item._id}')">
+                    <div class="button-edit">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+                <div class="copy-link" id='cl${item._id}' onclick="copyText('${item._id}')">
                     Reveal the link
                 </div>
-            </div>
-        <% }) %>
-    </div>
-</div>
-<script>
+                <div class="copy-link-button" id='cl${item._id}' onclick="copyText2('${item._id}')">
+                    <i class="fas fa-link"></i>
+                </div>
+            </div>`)
+        })
+    }
+    window.onload =getQuizes()
     const copyText=(id)=>{
-        document.getElementById(id).innerHTML=`${window.location.origin}/quiz/${id}`
+        document.getElementById(`cl${id}`).innerHTML=`${window.location.origin}/quiz/${id}`
+        navigator.clipboard.writeText(`${window.location.origin}/quiz/${id}`)
+    }
+    const copyText2=(id)=>{
         navigator.clipboard.writeText(`${window.location.origin}/quiz/${id}`)
     }
     const editpage=(id)=>{
         location.assign(`${window.location.origin}/quiz/edit/${id}`)
+    }
+    const deletequiz=async (id)=>{
+        const url=`${window.location.origin}/api/create/${id}`
+        await fetch(url,{
+            method:'DELETE',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then((Response)=>Response.json())
+        .then((data)=>{
+            if(data.status)
+            {
+                document.querySelector('.quiz-list').innerHTML=''
+                getQuizes()
+            }
+            
+            else
+                alert("try again!!")
+        })
     }
 </script>

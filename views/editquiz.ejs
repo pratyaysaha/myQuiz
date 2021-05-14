@@ -95,7 +95,7 @@
                                     </div>
                                 <%})%>
                             </div>
-                            <div class="info">
+                            <div class="info infos">
                                 <div class="total-marks">
                                     <div class="info-label">Marks</div>
                                     <div>
@@ -118,8 +118,7 @@
                                             <%item.options.map((option)=>{%>
                                                 <%if(option===item.answer){%>
                                                     <option value="<%=option%>" selected style="color:black;"><%=option%></option>
-                                                <%}
-                                                else{%>
+                                                <%}else{%>
                                                     <option value="<%=option%>" style="color:black;"><%=option%></option>
                                                 <%}%>
                                             <%})%>
@@ -129,8 +128,15 @@
                                 </div>
                             </div>
                             <div class="options q<%=qno%>">
-                                <div class="button add-ques q<%=qno%>" onclick="editQuestion(`<%=qno%>`)">
-                                    <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
+                                <div class="wrapper">
+                                    <div class="button add-ques q<%=qno%>" onclick="editQuestion(`<%=qno%>`)">
+                                        <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                                <div class="wrapper">
+                                    <div class="button add-ques q<%=qno%>" onclick="deleteQuestion(`<%=qno%>`)">
+                                        <div class="button-label"><i class="fas fa-trash-alt"></i></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -293,9 +299,16 @@
         .then((back)=>{
             if(back.status)
             {
-                document.getElementsByClassName(`options q${val}`)[0].innerHTML=` <div class="button add-ques q${val}" onclick="editQuestion(${val})">
-                                <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
-                            </div>`
+                document.getElementsByClassName(`options q${val}`)[0].innerHTML=`<div class="wrapper">
+                                    <div class="button add-ques q${val}" onclick="editQuestion('${val}')">
+                                        <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                                <div class="wrapper">
+                                    <div class="button add-ques q${val}" onclick="deleteQuestion('${val}')">
+                                        <div class="button-label"><i class="fas fa-trash-alt"></i></div>
+                                    </div>
+                                </div>`
                 document.getElementsByClassName(`question q${val}`)[0].id=back.data._id
             }
             else
@@ -349,7 +362,7 @@
                 console.log('Cannot Update. Try Again!!')
         })
     }   
-    const updateCreate=()=>{
+    const updateCreate=async ()=>{
         const data={}
         data.name=document.querySelector('.input.qname').value
         data.author=document.querySelector('.input.aname').value
@@ -366,7 +379,7 @@
         }
         console.log(data)
         const url=`${window.location.origin}/api/create/<%=quizDetails._id%>`
-        fetch(url,{
+        await fetch(url,{
             method:'PATCH',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -385,6 +398,23 @@
                     alert('Cannot update')
                 }
             })
+    }
+    const deleteQuestion=async (val)=>{
+        const qid=document.querySelector(`.question.q${val}`).id
+        const url=`${window.location.origin}/api/question/${qid}`
+        await fetch(url,{
+            method:'DELETE',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then((Response)=>Response.json())
+        .then((data)=>{
+            console.log(data)
+            if(data.status)
+                document.querySelector(`.question.q${val}`).remove()
+            else
+                alert("try again!!")
+        }) 
     }
 </script>
 </html>

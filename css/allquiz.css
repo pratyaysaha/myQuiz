@@ -22,7 +22,7 @@
     height : 40px;
     align-items: center;
     font-size: 20px;
-    width: 80%;
+    width: 85%;
     justify-content: space-between;
     font-family: 'Raleway', sans-serif;
 }
@@ -41,7 +41,7 @@
     font-size: 14px;
     width: 50%;
 }
-.copy-link:hover
+.copy-link:hover,.copy-link-button:hover
 {
     cursor: pointer;
     color: orchid;
@@ -50,4 +50,27 @@
 {
     color:orchid;
     cursor: pointer;
+}
+.copy-link-button
+{
+    display: none;
+}
+.menu-label.allquiz
+{
+    color: rgb(185, 11, 156)
+}
+@media screen and (max-width: 1100px) {
+    .copy-link-button
+    {
+        display: block;
+    }
+    .copy-link
+    {
+        display: none;
+    }
+    .quiz
+    {
+        padding-bottom: 30px;
+        width: 90%;
+    }
 }

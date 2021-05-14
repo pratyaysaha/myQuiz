@@ -13,8 +13,7 @@ app.set('view engine', 'ejs')
 
 app.get('/',async (req,res)=>{
     try{
-        const quizDetails=await QuizDetails.find()
-        res.render('quizall',{data : quizDetails})
+        res.render('quizall')
     }
     catch(err)
     {

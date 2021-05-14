@@ -87,7 +87,7 @@
                                 <div class="border"></div>
                             </div>
                         </div>
-                        <div class="info">
+                        <div class="info infos">
                             <div class="total-marks">
                                 <div class="info-label">Marks</div>
                                 <div>
@@ -295,6 +295,15 @@
         {
             data.isNegative=true
         }
+        for (x in data)
+        {
+            if(data[x]==='')
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+            
+        }
         const url=`${window.location.origin}/api/create/${quizid}`
         await fetch(url,{
             method:'POST',
@@ -306,9 +315,16 @@
         .then((back)=>{
             if(back.status)
             {
-                document.getElementsByClassName(`options q${val}`)[0].innerHTML=` <div class="button add-ques q${val}" onclick="editQuestion(${val})">
-                                <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
-                            </div>`
+                document.getElementsByClassName(`options q${val}`)[0].innerHTML=`<div class="wrapper">
+                                    <div class="button add-ques q${val}" onclick="editQuestion('${val}')">
+                                        <div class="button-label"><i class="fa fa-pen" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                                <div class="wrapper">
+                                    <div class="button add-ques q${val}" onclick="deleteQuestion('${val}')">
+                                        <div class="button-label"><i class="fas fa-trash-alt"></i></div>
+                                    </div>
+                                </div>`
                 document.getElementsByClassName(`question q${val}`)[0].id=back.data._id
             }
             else
@@ -399,6 +415,23 @@
                     alert('Cannot update')
                 }
             })
+    }
+    const deleteQuestion=async (val)=>{
+        const qid=document.querySelector(`.question.q${val}`).id
+        const url=`${window.location.origin}/api/question/${qid}`
+        await fetch(url,{
+            method:'DELETE',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then((Response)=>Response.json())
+        .then((data)=>{
+            console.log(data)
+            if(data.status)
+                document.querySelector(`.question.q${val}`).remove()
+            else
+                alert("try again!!")
+        }) 
     }
 </script>
 </html>

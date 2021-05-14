@@ -170,6 +170,9 @@ input::-webkit-calendar-picker-indicator {
     justify-content: flex-end;
     align-items: center;
 }
+.options>div{
+    padding-right: 20px;
+}
 .info
 {
     padding-top: 20px;
@@ -199,4 +202,20 @@ input::-webkit-calendar-picker-indicator {
 .input.info
 {
     padding-top: 0px;
+}
+@media screen and (max-width: 1100px) {
+    .question{
+        width: 85%;
+        padding-left: 10px;
+    }
+    .author-details > div
+    {
+        width: 90%;
+    }
+    .info>div>div{
+        width: 40%;
+    }
+    .infos{
+        padding-bottom: 20px;
+    }
 }

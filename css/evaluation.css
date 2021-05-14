@@ -77,10 +77,16 @@
     align-items: center;
     width: 100%;
 }
+.content:hover
+{
+    background-color:rgb(52, 53, 53);
+    cursor: pointer;
+}
 
 .name
 {
     width: 35%;
+    font-weight: bold;
 }
 .email
 {
@@ -98,4 +104,14 @@
 .submission-details > div
 {
     padding-right: 30px;
+}
+@media screen and (max-width: 1100px) {
+    .quiz-select
+    {
+        width: 50%;
+    }
+    .email
+    {
+        display: none;
+    }
 }
