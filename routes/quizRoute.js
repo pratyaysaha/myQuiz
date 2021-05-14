@@ -95,8 +95,7 @@ router.patch('/create/:id', async (req,res)=>{
         var setQuery={}
         setQuery.name=req.body.name
         setQuery.author=req.body.author
-        setQuery.email=req.body.email
-        setQuery.dot=req.body.dot
+        setQuery.authorEmail=req.body.authorEmail
         setQuery.stime=req.body.stime
         setQuery.etime=req.body.etime
             
@@ -115,7 +114,7 @@ router.patch('/create/:id', async (req,res)=>{
     res.json(status)
 })
 
-router.patch('/questions/:quesId', async (req,res)=>{
+router.patch('/question/:quesId', async (req,res)=>{
     var status={}
     try{
         status.status=true
@@ -178,6 +177,15 @@ router.get("/getsubmission", async (req, res) => {
     catch(err)
     {
         res.json({'status': false, 'error' : err, 'code': 103})
+    }
+})
+router.get('/submissions/:quizid',async(req,res)=>{
+    try{
+        const submissions=await Submit.find({quizId: req.params.quizid},{Answers:0})
+        res.json({'status': true, 'data': submissions})
+    }
+    catch(err){
+        res.json({'status': false, 'error' : err, code: 104})
     }
 })
 
@@ -274,19 +282,20 @@ router.get('/evaluate/:quizid', async (req, res) => {
 })
 
 router.get('/evaluate/submission/:submitid', async (req,res) => {
-    try {
-        const submits = await Submit.find({ _id: req.params.submitid })
-        console.log(submits)
-        const item = submits[0]
-            console.log(item)
-            if (!item.isEvaluated) {
-                var totalMarks = 0
-                const questions = await Question.find({ quizId: item.quizId })
-                console.log(questions)
-                for (let i = 0; i < questions.length; i++) {
-                    
-                    item.Answers.map(async (data) => {
-                        
+    try 
+    {
+            const submits = await Submit.find({ _id: req.params.submitid })
+            const item = submits[0]
+            var totalMarks = 0
+            var fullMarks=0
+            const questions = await Question.find({ quizId: item.quizId })
+            for(let i=0;i<questions.length;i++)
+            {
+                fullMarks+=questions[i].marks
+            }
+            if(item.isEvaluated){return res.json({"status":true, "data" : {"submittedAnswer" : submits[0], "questions" : questions,"fullmarks" : fullMarks}})}
+            for (let i = 0; i < questions.length; i++) {
+                item.Answers.map(async (data) => {            
                     if ((questions[i]._id) == data.quesId) {
                         if ((questions[i].answer) == data.submittedAnswer) {
                             totalMarks += questions[i].marks
@@ -297,33 +306,25 @@ router.get('/evaluate/submission/:submitid', async (req,res) => {
                             data.marksObtained = -questions[i].negative
                         }
                         else if (data.submittedAnswer == null) {
-                            data.marksObtained = 0
+                             data.marksObtained = 0
                         }
-                
-                
+                    }
+                })                    
             }
-        
-    })
-                    
-    }
-}
-    console.log(totalMarks)
-    var temp = {}
-    temp.submissionId = item._id
-    try {
-        const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
-        temp.status= true
-        temp.data = updateQuery
-        
-    }
-    catch (err) {
-        console.log(err)
-        temp.status = false
-        temp.error = err
-    }
-
-        
-        res.json({status : true})
+        var temp = {}
+        temp.submissionId = item._id
+        try {
+            const updateQuery = await Submit.updateOne({ "_id": `${item._id}` }, { "totalMarks": `${totalMarks}`, "isEvaluated": true, "$set": { "Answers": item.Answers } })
+            const submission=await Submit.find({ _id: req.params.submitid })
+            temp.status= true
+            temp.data = {"submittedAnswer" : submission[0], "questions" : questions,"fullmarks" : fullMarks}
+        }
+        catch (err) {
+            console.log(err)
+            temp.status = false
+            temp.error = err
+        }   
+        res.json(temp)
     }
     
     catch (err){

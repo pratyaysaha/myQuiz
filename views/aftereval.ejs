@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/quizpage.css">
+    <title><%=quizDetails.name%>/<%=submittedAnswer.candidate%></title>
+</head>
+<body>
+    <%- include('../views/header')%>
+    <div class="quiz-details">
+        <div class="label">
+            Quiz Details
+        </div>
+        <div class="det">
+            <div class="det-quiz-name">
+                <div class="inside-label">
+                    Name 
+                </div>
+                <div class="inside-value">
+                    <%=quizDetails.name%>
+                </div>
+            </div>
+            <div class="det-quiz-author">
+                <div class="inside-label">
+                     Author
+                </div>
+                <div class="inside-value">
+                    <%=quizDetails.author%>
+                </div>
+            </div>
+            <div class="det-quiz-authoremail">
+                <div class="inside-label">
+                    Email
+                </div>
+                <div class="inside-value">
+                    <%=quizDetails.authorEmail%>
+                </div>
+            </div>
+            <div class="det-quiz-authoremail">
+                <div class="inside-label">
+                    Total
+                </div>
+                <div class="inside-value">
+                    <%=fullmarks%>
+                </div>
+            </div>
+            <div class="det-quiz-authoremail">
+                <div class="inside-label">
+                    Marks
+                </div>
+                <div class="inside-value">
+                    <%=submittedAnswer.totalMarks%>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="candidate-details">
+        <div class="label">
+            Candidate Details
+        </div>
+        <div class="c-details">
+            <div class="candidate-name">
+                <div class="inside-label">Name<span class="important">*</span></div>
+                <div class="input-field">
+                    <input class="input name" type="text" value="<%=submittedAnswer.candidate%>" readonly>
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="candidate-email">
+                <div class="inside-label">Email<span class="important">*</span></div>
+                <div class="input-field">
+                    <input class="input email" type="text" value="<%= submittedAnswer.Email%>" readonly>
+                    <div class="border"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="question-container">
+        <div class="label">
+            Questions
+        </div>
+        <%questions.map((item,index)=>{ %>
+            <div class="ques">
+                <div class="question-label">
+                    <div class="content"> <%= item.ques %></div>
+                    <div class="marks"><%=submittedAnswer.Answers.find(({quesId})=>quesId===item._id).marksObtained%></div>
+                </div>
+                <div class="options">
+                    <% item.options.map((item2, index)=>{ %>
+                        <%if(item2===submittedAnswer.Answers.find(({quesId})=>quesId===item._id).submittedAnswer && item2===item.answer){%>
+                        <div class="option">
+                            <input type="radio" class="<%= item._id+' '+index %>" value="<%=item2%>" checked>
+                            <span class= "option-label correct"><%= item2 %></span>
+                        </div>
+                        <%}else if(item2===submittedAnswer.Answers.find(({quesId})=>quesId===item._id).submittedAnswer && item2!==item.answer) {%>
+                            <div class="option">
+                                <input type="radio" class="<%= item._id+' '+index %>" value="<%=item2%>" checked>
+                                <span class= "option-label incorrect"><%= item2 %></span>
+                            </div>
+                        <%}else if(item2===item.answer){%>
+                            <div class="option">
+                                <input type="radio" class="<%= item._id+' '+index %>" value="<%=item2%>" disabled>
+                                <span class= "option-label correct"><%= item2 %></span>
+                            </div>
+                        <%}else{%>
+                            <div class="option">
+                                <input type="radio" class="<%= item._id+' '+index %>" value="<%=item2%>" disabled>
+                                <span class= option-label><%= item2 %></span>
+                            </div>
+                        <%}%>
+                   <%})%>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+
+</body>
+<style>
+    .correct
+    {
+        color: greenyellow;
+    }
+    .incorrect
+    {
+        color: red;
+    }
+    .question-label
+    {
+        display: flex;
+    }
+    .question-label > div
+    {
+        padding-right: 40px;
+    }
+    .marks
+    {
+        color: white;
+    }
+</style>
+
+</html>

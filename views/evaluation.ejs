@@ -6,14 +6,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href='/evaluation.css'>
     <title>Evaluation</title>
 </head>
 <body>
     <%-include('../views/header')%>
     <div class="content-container">
         <%- include('../views/sidebar',{select : "evaluation"}) %>
+        <div class="container">
+            <div class="quiz-select-container">
+                <div class="quiz-select-label">
+                    Quiz
+                </div>
+                <div class="quiz-select">
+                    <select class="allquiz-select" onchange="getsubmissions()">
+                        <option value="none" style="color: black;" selected>none</option>
+                        <% quizDetails.map((item)=>{%>
+                            <option value="<%=item._id%>" style="color: black;"><%=item.name%></option>
+                        <%})%>
+                    </select>
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="submission-container">
+                <div class="submission-details">
+                    <div class="submission-label">
+                        Submissions
+                    </div>
+                    <div class="submissions-number">
+
+                    </div>
+                </div>
+                <div class="submissions">
+                </div>
+            </div>
+        </div>
     </div>
     <%-include('../views/footer')%>
-    
 </body>
+<script>
+    const getsubmissions= async ()=>{
+        var quizid=document.querySelector('.allquiz-select').value
+        var element=document.querySelector('.submissions')
+        var num=document.querySelector('.submissions-number')
+        if(quizid=='none')
+        {
+            element.innerHTML='<div> No responses yet </div>'
+            return
+        }
+        if(quizid==='') { return }
+        const url=`${window.location.origin}/api/submissions/${quizid}`
+        await fetch(url)
+        .then((Response)=>Response.json())
+        .then((back)=>{
+            num.innerHTML=`${back.data.length}`
+            element.innerHTML=""
+            back.data.map((item)=>{
+                element.insertAdjacentHTML("beforeend",`<div class="submission" id='${item._id}' onclick="movetopage('${item._id}')">
+                        <div class="content">
+                            <div class="name">
+                                ${item.candidate}
+                            </div>
+                            <div class="email">
+                                ${item.Email}
+                            </div>
+                            <div class="marks">
+                                ${item.totalMarks}
+                            </div>
+                        </div>
+                    </div>`)
+            })
+        })
+    }
+    const movetopage=(id)=>{
+        const url=`${window.location.origin}/quiz/${id}/admin/success`
+        document.getElementsByTagName('select')[0].value='none'
+        location.assign(url)
+    }
+
+</script>
 </html>

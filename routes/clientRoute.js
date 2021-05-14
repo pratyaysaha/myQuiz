@@ -4,6 +4,7 @@ const Questions=require('../models/questions')
 const nodemailer = require('nodemailer')
 const Submit = require('../models/submission');
 const fetch = require('node-fetch');
+const quizdetails = require('../models/quizdetails');
 require('dotenv/config')
 const router= express.Router()
 
@@ -33,10 +34,13 @@ router.get('/:quizid',async (req,res)=>{
             sendQuestion.push(data); 
         })
         
-    
-        if(Date.now()>=quizDetails.stime&&Date.now()<=quizDetails.etime)
+        console.log(new Date())
+        console.log(new Date(quizDetails.stime))
+        console.log(new Date(quizDetails.etime))
+        if(Date.now()>=new Date(quizDetails.stime)&&Date.now()<=new Date(quizDetails.etime))
         {
            
+<<<<<<< HEAD
             res.render("quizpage",{data : {quizDetails, questions: sendQuestion}, timelimit: true})
        
         }
@@ -44,6 +48,14 @@ router.get('/:quizid',async (req,res)=>{
              res.send("Quiz not available")
          }
     }
+=======
+            res.render("quizpage",{data : {quizDetails, questions: sendQuestion},timelimit: true})
+        }  
+        else{
+            res.send("Quiz not available")
+        }
+}
+>>>>>>> 5ef8e1aa36e19f40fc98ccc7609631f585ec46b5
     catch(err)
     {
         console.log("err");
@@ -110,45 +122,36 @@ router.get('/admin/:quizid',async (req,res)=>{
 
 
 router.get('/:submissionId/success' ,async(req, res)=>{
-    res.render('success')
-    try{
-       
-        
-       await fetch(`http://localhost:3000/api/evaluate/submission/${req.params.submissionId}`)
-            
+    const url= `${req.protocol}://${req.get('host')}/api/evaluate/submission/${req.params.submissionId}`
+    var receivedData={}
+     try{
+       await fetch(url)    
         .then(res => res.json())
-        .then(json => console.log(json))
-    
-        const submits = await Submit.find({ _id: req.params.submissionId })
-        console.log(submits)
-        console.log(submits[0].Email)
-        var add = 0
-        const quizName = await QuizDetails.findOne({_id:submits[0].quizId})
-        console.log(quizName.name)
-        for(let i=0;i<submits[0].Answers.length;i++){
-            const marking = await Questions.findOne({_id : submits[0].Answers[i].quesId})
-            add+=marking.marks
-        
-        }
-        console.log(add)
-        
-    const message = {
+        .then(back => {
+            if(!back.status)
+                res.send("404 Error")
+            receivedData=back.data
+        })
+        const quiz=await QuizDetails.findOne({_id: receivedData.submittedAnswer.quizId})
+        receivedData.quizDetails=quiz
+        res.render('aftereval',{quizDetails : receivedData.quizDetails, 
+                                submittedAnswer : receivedData.submittedAnswer, 
+                                fullmarks : receivedData.fullmarks,
+                                questions : receivedData.questions
+                            })
+        const obj=receivedData.submittedAnswer
+        const link=`${req.protocol}://${req.get('host')}/quiz/${req.params.submissionId}/admin/success`
+      const message = {
         from: process.env.EMAIL, 
-        to: submits[0].Email,         
+        to: obj.Email,         
         subject: 'Submission Sucessfull', 
         html: `
         <div style="width: 100%;
         height: 65px;
         background-color: aquamarine;
         display: flex;
-        flex-direction: row;
         align-items: center;
         background-color: royalblue;">
-            <div style="padding-left: 20px;">
-                <div style="font-size: 30px;
-                color :salmon;">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
                 <div style="font-size: 25px;
                 font-family: 'Raleway', sans-serif;
                 font-weight:bold; padding-top:15px; color:salmon;">
@@ -156,14 +159,15 @@ router.get('/:submissionId/success' ,async(req, res)=>{
                 </div>
             </div>
         </div>
-        <h1>${quizName.name}</h1>
-        <h1>Total score: ${submits[0].totalMarks}/${add}</h1>
+        <h1>${quiz.name}</h1>
+        <h1>Total score: ${obj.totalMarks}/${receivedData.fullmarks}</h1>
+        <a href="${link}"><h3>Link to your result</h3></a>       
         <div style="background-color: royalblue;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        height: 40px;
+        height: 50px;
         font-size: 18px;
         font-family: 'Raleway', sans-serif; padding-bottom:5px;">
     <div style="padding:10px; color:white;">
@@ -178,14 +182,37 @@ router.get('/:submissionId/success' ,async(req, res)=>{
         } else {
           console.log(info);
         }
-    })
+    })  
 }
 catch(err){
     console.log(err)
-}
+} 
 
 })
-
+router.get('/:submissionId/admin/success' ,async(req, res)=>{
+    const url= `${req.protocol}://${req.get('host')}/api/evaluate/submission/${req.params.submissionId}`
+    var receivedData={}
+     try{
+       await fetch(url)    
+        .then(res => res.json())
+        .then(back => {
+            if(!back.status)
+                res.send("404 Error")
+            receivedData=back.data
+        })
+        const quiz=await QuizDetails.findOne({_id: receivedData.submittedAnswer.quizId})
+        receivedData.quizDetails=quiz
+        res.render('aftereval',{quizDetails : receivedData.quizDetails, 
+                                submittedAnswer : receivedData.submittedAnswer, 
+                                fullmarks : receivedData.fullmarks,
+                                questions : receivedData.questions
+                            })
+        }
+        catch(err)
+        {
+            console.log(err)
+        }
+    })
 router.get('/edit/:quizid', async (req,res)=>{
     try{
         const quizDetails=await QuizDetails.findById(req.params.quizid)
