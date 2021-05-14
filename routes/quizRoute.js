@@ -116,6 +116,49 @@ router.patch('/create/:id', async (req,res)=>{
     res.json(status)
 })
 
+
+
+router.delete('/create/:id', async(req,res)=>{
+    var status={}
+    var response= await validateQuizID(req.params.id)
+    if(response==false)
+    {
+        status.status=false
+        status.code=12
+    }
+    else
+    {
+        status.status=true
+        try{
+            const deleteQuiz = await Quiz.deleteOne({'_id':req.params.id})
+            res.json({'status' : true , 'ok' : deleteQuiz.ok})
+        }
+        catch(err){
+            res.json({'status' : false, 'error' : err, 'code': 200 })
+        } 
+    }
+})
+
+
+router.delete('/questions/:quesId', async(req,res)=>{
+    var status={}
+    try
+    {
+        status.status=true
+        try{
+            const deleteQues = await Question.deleteOne({'_id':req.params.quesId})
+            res.json({'status' : true , 'ok' : deleteQues.ok})
+        }
+        catch(err){
+            res.json({'status' : false, 'error' : err, 'code': 200 })
+        } 
+    }
+    catch(err){
+        console.log(err)
+    }
+})
+
+
 router.patch('/questions/:quesId', async (req,res)=>{
     var status={}
     try{
