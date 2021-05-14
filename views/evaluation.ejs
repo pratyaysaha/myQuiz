@@ -62,7 +62,7 @@
             num.innerHTML=`${back.data.length}`
             element.innerHTML=""
             back.data.map((item)=>{
-                element.insertAdjacentHTML("beforeend",`<div class="submission" id='${item._id}' onclick="movetopage()">
+                element.insertAdjacentHTML("beforeend",`<div class="submission" id='${item._id}' onclick="movetopage('${item._id}')">
                         <div class="content">
                             <div class="name">
                                 ${item.candidate}
@@ -77,6 +77,11 @@
                     </div>`)
             })
         })
+    }
+    const movetopage=(id)=>{
+        const url=`${window.location.origin}/quiz/${id}/admin/success`
+        document.getElementsByTagName('select')[0].value='none'
+        location.assign(url)
     }
 
 </script>

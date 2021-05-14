@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit:<%=quizDetails.name%></title>
+    <title>Edit: <%=quizDetails.name%></title>
+    <link rel="icon" type="image/png" href="../favicon-16x16.png"/>
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href='/createquiz.css'>
     <link rel="stylesheet" href='/editquiz.css'>
@@ -41,7 +42,7 @@
                     <div class="inside-label">Start time<span class="important">*</span></div>
                     <div class="input-field">
                         <% var dt=quizDetails.stime
-                            var dtiso=new Date(dt).toISOString().replace('Z', '')
+                            var dtiso=dt.toISOString().substring(0,10)+'T'+dt.toString().substring(16,24)
                         %>
                         <input class="input stime" type="datetime-local" value="<%=dtiso%>">
                         <div class="border"></div>
@@ -51,7 +52,7 @@
                     <div class="inside-label">End time<span class="important">*</span></div>
                     <div class="input-field">
                         <% var dt=quizDetails.etime
-                            var dtiso=new Date(dt).toISOString().replace('Z', '')
+                            var dtiso=dt.toISOString().substring(0,10)+'T'+dt.toString().substring(16,24)
                          %>
                         <input class="input etime" type="datetime-local" value="<%=dtiso%>">
                         <div class="border"></div>
@@ -148,6 +149,8 @@
     <%-include('../views/footer')%>
 </body>
 <script>
+    console.log(`<%=quizDetails%>`)
+    console.log(`<%-quizDetails.stime%>`)
     var quizid=`<%=quizDetails._id%>`
     const validEmail=(email)=>{
         var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
@@ -331,6 +334,57 @@
             
         }
         console.log(data)
+        const qid=document.querySelector(`.question.q${val}`).id
+        const url=`${window.location.origin}/api/question/${qid}`
+        await fetch(url,{
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(data),
+        })
+        .then((Response)=>Response.json())
+        .then((back)=>{
+            if(!back.status)
+                console.log('Cannot Update. Try Again!!')
+        })
     }   
+    const updateCreate=()=>{
+        const data={}
+        data.name=document.querySelector('.input.qname').value
+        data.author=document.querySelector('.input.aname').value
+        data.authorEmail=document.querySelector('.input.email').value
+        data.stime=new Date(document.querySelector('.input.stime').value)
+        data.etime=new Date(document.querySelector('.input.etime').value)
+        for(x in data)
+        {
+            if(data[x]==="")
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+        }
+        console.log(data)
+        const url=`${window.location.origin}/api/create/<%=quizDetails._id%>`
+        fetch(url,{
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(data),
+        })
+            .then((Response)=>Response.json())
+            .then((data)=>{
+                console.log(data)
+                if(data.status)
+                    {
+                        alert('Updated')
+                    }
+                else
+                {
+                    alert('Cannot update')
+                }
+            })
+    }
 </script>
 </html>

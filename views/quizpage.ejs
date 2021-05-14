@@ -7,8 +7,12 @@
     <title><%= data.quizDetails.name %></title>
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/quizpage.css">
+    <script type="text/javascript">
+        window.history.forward();
+        function noBack() { window.history.forward(); }
+    </script>
 </head>
-<body>
+<body nload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
     <%- include('../views/header')%>
     <div class="quiz-details">
         <div class="label">
@@ -187,4 +191,5 @@
     
     
 </script>
+
 </html>

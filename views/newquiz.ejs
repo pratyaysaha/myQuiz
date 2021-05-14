@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
     <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href='/createquiz.css'>
     <link rel="stylesheet" href='/newquiz.css'>
@@ -171,6 +170,7 @@
         })
             .then((Response)=>Response.json())
             .then((data)=>{
+                console.log(data)
                 if(data.status)
                     {
                         quizid=data.data._id
@@ -317,6 +317,88 @@
             }
         })
         console.log(data)        
+    }
+    const editQuestion= async (val)=>{
+        var data={}
+        data.ques=document.querySelector(`.input.ques.q${val}`).value
+        var choices= document.getElementsByClassName(`input ichoice q${val}`)
+        var options=[]
+        for(i=0;i<choices.length;i++)
+        {
+            options.push(choices[i].value)
+        }
+        data.options=options
+        var info=document.getElementsByClassName(`input info q${val}`)
+        data.marks=Number(info[0].value)
+        data.negative=Number(info[1].value)
+        data.answer=info[2].value
+        data.quizId=quizid
+        data.isNegative=false
+        if(data.negative>0)
+        {
+            data.isNegative=true
+        }
+        for (x in data)
+        {
+            if(data[x]==='')
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+            
+        }
+        console.log(data)
+        const qid=document.querySelector(`.question.q${val}`).id
+        const url=`${window.location.origin}/api/question/${qid}`
+        await fetch(url,{
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(data),
+        })
+        .then((Response)=>Response.json())
+        .then((back)=>{
+            if(!back.status)
+                console.log('Cannot Update. Try Again!!')
+        })
+    }  
+    const updateCreate=()=>{
+        const data={}
+        data.name=document.querySelector('.input.qname').value
+        data.author=document.querySelector('.input.aname').value
+        data.authorEmail=document.querySelector('.input.email').value
+        data.stime=new Date(document.querySelector('.input.stime').value)
+        data.etime=new Date(document.querySelector('.input.etime').value)
+        for(x in data)
+        {
+            if(data[x]==="")
+            {
+                alert('Fill up the empty slots')
+                return
+            }
+        }
+        console.log(data)
+        const url=`${window.location.origin}/api/create/${quizid}`
+        fetch(url,{
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body:JSON.stringify(data),
+        })
+            .then((Response)=>Response.json())
+            .then((data)=>{
+                console.log(data)
+                if(data.status)
+                    {
+                        alert('Updated')
+                    }
+                else
+                {
+                    alert('Cannot update')
+                }
+            })
     }
 </script>
 </html>
