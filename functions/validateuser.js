@@ -29,6 +29,12 @@ const validateUser = async (credString) =>{
     try{
         var userSearch={}
         userSearch= await UserLogin.findOne({'username' : cred[0]})
+        
+        if(userSearch==null)
+        {
+            throw new Error("Username not found")
+        }
+        else{
         console.log(userSearch)
         console.log(userSearch.password)
         const isTrue= await bcrypt.compare(cred[1],userSearch.password)
@@ -39,6 +45,7 @@ const validateUser = async (credString) =>{
             user.password="It is secret"
             console.log(user.password)
             return {'status' : true, 'error' : "No error", "data": user}
+        }
             
     }
     catch(err){ 

@@ -143,16 +143,43 @@ router.get('/signin', async (req,res)=>{
     const {status, error, code}=await validateUser(req.query.UserName)
     if(status==false)
         res.json({'status' : status, error, code})
-    try{
+    else{
         var cred=req.query.UserName.split(' ')
         const searchUser= await Loginuser.find({'username': cred[0]})
-            console.log(searchUser[0]._id)
             const searchQuiz= await Quiz.find({'authorEmail': searchUser[0].mail})
             res.render('quizall',{data : searchQuiz})
+        
+    }
+    
+})
+
+
+router.patch('/signin/forgetpassword/:userName', async (req,res)=>{
+    var status={}
+    try
+    {
+        try{
+            var hashedPass= await bcrypt.hash(req.body.password,10)
         }
         catch(err){
-            res.json({'status' : false, 'error' : err, 'code' : 26}) 
+            res.json({'status' : false, 'error' : err, 'code' : 21}) 
         }
+        status.status=true
+        try{
+            const Updatepass= await Loginuser.updateOne({"username":req.params.userName}, {$set:{"password":hashedPass}});
+            status.data=Updatepass;
+          
+        console.log(Updatepass)
+        }
+        catch(err){
+            status.status=false;
+            status.code=15;
+        }
+    }
+    catch(err){
+        console.log(err)
+    }
+    res.json(status)
     
 })
 
