@@ -130,7 +130,7 @@ router.get('/:submissionId/success' ,async(req, res)=>{
                                 questions : receivedData.questions
                             })
         const obj=receivedData.submittedAnswer
-        const link=`${req.protocol}://${req.get('host')}/quiz/${req.params.submissionId}/success/admin`
+        const link=`${req.protocol}://${req.get('host')}/quiz/${req.params.submissionId}/admin/success`
       const message = {
         from: process.env.EMAIL, 
         to: obj.Email,         
