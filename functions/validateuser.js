@@ -3,12 +3,10 @@ const bcrypt=require('bcrypt')
 const validateUser = async (credString) =>{
     var error={'status': false}
     try{
-        if(credString == undefined)
-            throw new Error(0)
         var cred=credString.split(' ')
-        console.log(cred[0])
+        /* console.log(cred[0])
         console.log(cred[1])
-        console.log(cred.length)
+        console.log(cred.length) */
         if(cred.length< 2 || cred.length > 2)
             throw new Error(cred.length)
     }

@@ -139,7 +139,8 @@ router.post('/signup', async (req,res)=>{
 
 
 router.get('/signin', async (req,res)=>{
-    console.log(req.query.UserName)
+    /* console.log(req.query.UserName) */
+    if(req.query.UserName===undefined) {return res.json({"status": false, "error" : "no username and password"})}
     const {status, error, code}=await validateUser(req.query.UserName)
     if(status==false)
         res.json({'status' : status, error, code})
