@@ -40,22 +40,12 @@ router.get('/:quizid',async (req,res)=>{
         if(Date.now()>=new Date(quizDetails.stime)&&Date.now()<=new Date(quizDetails.etime))
         {
            
-<<<<<<< HEAD
-            res.render("quizpage",{data : {quizDetails, questions: sendQuestion}, timelimit: true})
-       
-        }
-        else{
-             res.send("Quiz not available")
-         }
-    }
-=======
             res.render("quizpage",{data : {quizDetails, questions: sendQuestion},timelimit: true})
         }  
         else{
             res.send("Quiz not available")
         }
 }
->>>>>>> 5ef8e1aa36e19f40fc98ccc7609631f585ec46b5
     catch(err)
     {
         console.log("err");
