@@ -155,8 +155,6 @@
     <%-include('../views/footer')%>
 </body>
 <script>
-    console.log(`<%=quizDetails%>`)
-    console.log(`<%-quizDetails.stime%>`)
     var quizid=`<%=quizDetails._id%>`
     const validEmail=(email)=>{
         var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
@@ -185,7 +183,6 @@
     }
     const addchoice=(val)=>{
         var element=document.querySelector(`.choices.q${val}`)
-        console.log(element)
         element.insertAdjacentHTML("beforeend",`<div class="choice q${val}">
                                 <input class="input ichoice q${val}" type="text" placeholder="option" value="" onblur="addanskey(${val})" >
                                 <div class="border"></div>
@@ -346,7 +343,6 @@
             }
             
         }
-        console.log(data)
         const qid=document.querySelector(`.question.q${val}`).id
         const url=`${window.location.origin}/api/question/${qid}`
         await fetch(url,{
@@ -359,7 +355,7 @@
         .then((Response)=>Response.json())
         .then((back)=>{
             if(!back.status)
-                console.log('Cannot Update. Try Again!!')
+                alert('Cannot Update. Try Again!!')
         })
     }   
     const updateCreate=async ()=>{
@@ -377,7 +373,6 @@
                 return
             }
         }
-        console.log(data)
         const url=`${window.location.origin}/api/create/<%=quizDetails._id%>`
         await fetch(url,{
             method:'PATCH',
@@ -388,7 +383,6 @@
         })
             .then((Response)=>Response.json())
             .then((data)=>{
-                console.log(data)
                 if(data.status)
                     {
                         alert('Updated')
@@ -409,7 +403,6 @@
             }
         }).then((Response)=>Response.json())
         .then((data)=>{
-            console.log(data)
             if(data.status)
                 document.querySelector(`.question.q${val}`).remove()
             else

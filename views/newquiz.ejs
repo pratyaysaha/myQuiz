@@ -170,7 +170,7 @@
         })
             .then((Response)=>Response.json())
             .then((data)=>{
-                console.log(data)
+                
                 if(data.status)
                     {
                         quizid=data.data._id
@@ -189,7 +189,6 @@
     const addanskey=(val)=>{
         var choices= document.getElementsByClassName(`input ichoice q${val}`)
         var anskey=document.getElementsByClassName(`input info q${val}`)[2]
-        console.log(anskey)
         anskey.innerHTML=""
         for(i=0;i<choices.length;i++)
         {
@@ -201,7 +200,6 @@
 
     const addchoice=(val)=>{
         var element=document.querySelector(`.choices.q${val}`)
-        console.log(element)
         element.insertAdjacentHTML("beforeend",`<div class="choice q${val}">
                                 <input class="input ichoice q${val}" type="text" placeholder="option" value="" onblur="addanskey(${val})" >
                                 <div class="border"></div>
@@ -331,8 +329,7 @@
             {
                 alert('Question unable to upload.\nTry again!!!')
             }
-        })
-        console.log(data)        
+        })       
     }
     const editQuestion= async (val)=>{
         var data={}
@@ -363,7 +360,6 @@
             }
             
         }
-        console.log(data)
         const qid=document.querySelector(`.question.q${val}`).id
         const url=`${window.location.origin}/api/question/${qid}`
         await fetch(url,{
@@ -376,7 +372,7 @@
         .then((Response)=>Response.json())
         .then((back)=>{
             if(!back.status)
-                console.log('Cannot Update. Try Again!!')
+                alert('Cannot Update. Try Again!!')
         })
     }  
     const updateCreate=()=>{
@@ -394,7 +390,6 @@
                 return
             }
         }
-        console.log(data)
         const url=`${window.location.origin}/api/create/${quizid}`
         fetch(url,{
             method:'PATCH',
@@ -405,7 +400,6 @@
         })
             .then((Response)=>Response.json())
             .then((data)=>{
-                console.log(data)
                 if(data.status)
                     {
                         alert('Updated')
@@ -426,7 +420,6 @@
             }
         }).then((Response)=>Response.json())
         .then((data)=>{
-            console.log(data)
             if(data.status)
                 document.querySelector(`.question.q${val}`).remove()
             else

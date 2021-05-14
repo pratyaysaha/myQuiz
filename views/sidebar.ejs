@@ -12,7 +12,6 @@
     </div>
 </div>
 <script>
-    console.log(`<%=select%>`)
     window.onload=()=>{
         var option=`<%=select%>`
         if(option==='allquiz')
@@ -23,7 +22,6 @@
         }
         else if(option==='newquiz')
         {
-            console.log('hi2')
             document.querySelector('.menu-label.allquiz').style.color='white'
             document.querySelector('.menu-label.newquiz').style.color='rgb(185, 11, 156)'
             document.querySelector('.menu-label.evaluation').style.color='white'

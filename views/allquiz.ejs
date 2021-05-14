@@ -14,10 +14,8 @@
         await fetch(url)
             .then((Response)=>Response.json())
             .then((back)=>{
-                console.log(back)
                 if(back.status)
                 {
-                    console.log(back.data)
                     received=back.data
                 }
             })
