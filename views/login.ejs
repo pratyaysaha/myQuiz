@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href='/login.css'>
+    <title>My Quiz</title>
+</head>
+<body>
+    <%-include('../views/headerwm')%>
+    <div class="content-container">
+        <div class="login-container">
+            <div class="username">
+                <div class="label">
+                    Username
+                </div>
+                <div class="input-field">
+                    <input type="text" class="input user" required placeholder="">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="password">
+                <div class="label">
+                    Password
+                </div>
+                <div class="input-field">
+                    <div class="whole-input">
+                        <input type="password" class="input pass" required placeholder="">
+                        <div class="show-pass" onclick="showpass()">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="button login" onclick="login()">
+                    <div class="button-label">
+                        Login
+                    </div>
+                </div>
+            </div>
+            <div class="signup">
+                <div class="create">
+                    <div class="create-label" onclick="tosignup()">
+                        Create an account
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-include('../views/footer')%>
+</body>
+<script>
+    var showpassState=false
+    const showpass=()=>{
+        var elem=document.querySelector('.input.pass')
+        var icon=document.querySelector('.show-pass')
+        if(!showpassState)
+        {
+            elem.type='text'
+            icon.innerHTML=`<i class="far fa-eye-slash"></i>`
+            showpassState=true
+        }
+        else
+        {
+            elem.type='password'
+            icon.innerHTML=`<i class="far fa-eye"></i>`
+            showpassState=false
+        }
+    }
+    const login = async ()=>{
+        var username=document.querySelector('.input.user').value
+        var password=document.querySelector('.input.pass').value
+        if(username==='' || password=='')
+        {
+           alert('Fill up the fields')
+           return
+        }
+        console.log(username,password)
+    }
+    const tosignup=()=>{
+        location.assign(`${window.location.origin}/signup`)
+    }
+
+</script>
+</html>

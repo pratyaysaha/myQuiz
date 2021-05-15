@@ -19,7 +19,7 @@ app.get('/',async (req,res)=>{
     {
         console.log("err");
     }
-    
+ 
 })
 app.get('/newquiz',async (req,res)=>{
     res.render('newquiz')
@@ -33,6 +33,9 @@ app.get('/evaluation',async (req,res)=>{
     {
         console.log(err)
     }
+})
+app.get('/login',(req,res)=>{
+    res.render('login')
 })
 
 mongoose.connect(process.env.DB_CONNECTION,{ 
