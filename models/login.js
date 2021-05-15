@@ -25,4 +25,10 @@ const Login=mongoose.Schema({
             }
     }
 })
+
+Login.methods.toJSON = function() {
+    var obj = this.toObject();
+    delete obj.password;
+    return obj;
+   }
 module.exports=mongoose.model('Login',Login)

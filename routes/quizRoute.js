@@ -2,12 +2,13 @@ const e = require('express');
 const express = require('express')
 const Quiz= require('../models/quizdetails')
 const Question=require('../models/questions');
+const User=require('./userdetails');
 
 
 // const questions = require('../models/questions');
 const Submit = require('../models/submission');
 const router= express.Router();
-
+router.use('/user',User)
 
 
 

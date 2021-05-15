@@ -3,13 +3,12 @@ const mongoose=require('mongoose')
 const quizRoute= require('./routes/quizRoute')
 const clientRoute=require('./routes/clientRoute')
 const QuizDetails= require('./models/quizdetails')
-const User= require('./routes/userdetails')
 const app=express()
 require('dotenv/config')
 
 app.use('/api',quizRoute)
 app.use('/quiz',clientRoute)
-app.use('/user',User)
+
 app.use(express.static(__dirname+'/css'))
 app.set('view engine', 'ejs')
 

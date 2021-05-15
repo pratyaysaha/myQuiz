@@ -1,32 +1,10 @@
 const UserLogin=require('../models/login')
 const bcrypt=require('bcrypt')
-const validateUser = async (credString) =>{
+const validateUser = async (username, password) =>{
     var error={'status': false}
     try{
-        var cred=credString.split(' ')
-        /* console.log(cred[0])
-        console.log(cred[1])
-        console.log(cred.length) */
-        if(cred.length< 2 || cred.length > 2)
-            throw new Error(cred.length)
-    }
-    catch(err){
-        console.log(err)
-        if(err > 2)
-        {
-            error.error="Enter Username<space>Password"
-            error.code=23
-        }
-        else
-        {
-            error.error="Enter Username<space>Password"
-            error.code=24
-        }
-        return error 
-    }
-    try{
         var userSearch={}
-        userSearch= await UserLogin.findOne({'username' : cred[0]})
+        userSearch= await UserLogin.findOne({'username' : username})
         
         if(userSearch==null)
         {
@@ -35,14 +13,13 @@ const validateUser = async (credString) =>{
         else{
         console.log(userSearch)
         console.log(userSearch.password)
-        const isTrue= await bcrypt.compare(cred[1],userSearch.password)
+        const isTrue= await bcrypt.compare(password,userSearch.password)
         if(isTrue == false)
             throw new Error("Password incorrect")
         else    
-            var user=userSearch
-            user.password="It is secret"
-            console.log(user.password)
-            return {'status' : true, 'error' : "No error", "data": user}
+            userSearch.password="It is secret"
+            console.log(userSearch.password)
+            return {'status' : true, 'error' : "No error"}
         }
             
     }

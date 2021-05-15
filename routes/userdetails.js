@@ -138,19 +138,24 @@ router.post('/signup', async (req,res)=>{
 // })
 
 
-router.get('/signin', async (req,res)=>{
-    /* console.log(req.query.UserName) */
-    if(req.query.UserName===undefined) {return res.json({"status": false, "error" : "no username and password"})}
-    const {status, error, code}=await validateUser(req.query.UserName)
-    if(status==false)
-        res.json({'status' : status, error, code})
-    else{
-        var cred=req.query.UserName.split(' ')
-        const searchUser= await Loginuser.find({'username': cred[0]})
-            const searchQuiz= await Quiz.find({'authorEmail': searchUser[0].mail})
-            res.render('quizall',{data : searchQuiz})
+router.post('/login', async (req,res)=>{
+    console.log(req.body)
+    if(req.body.username===undefined) {return res.json({"status": false, "error" : "no username and password"})}
+    
+    try{
         
-    }
+        const {status, error, code}=await validateUser(req.body.username, req.body.password)
+        if(status==false)
+            res.json({'status' : status, error, code})
+        else{
+            const searchUser= await Loginuser.find({'username': req.body.username})
+            res.json({"status": true, "data" : searchUser})
+        
+         }
+        }
+        catch(err){
+            console.log(err)
+        }
     
 })
 
