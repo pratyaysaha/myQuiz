@@ -4,10 +4,10 @@
         <div class="hamburger" onclick="showMenu()">
             <i class="fas fa-bars"></i>
         </div>
-        <div class="logo">
+        <div class="logo" onclick="tohome()">
             <i class="fas fa-user-graduate"></i>
         </div>
-        <div class="quiz-name">
+        <div class="quiz-name" onclick="tohome()">
             My Quiz
         </div>
     </div>
@@ -24,7 +24,9 @@
     </div>
 </div>
 <div class="userafter">
-    <%=user.username%>
+    <div class="userafter-content">
+        <%=user.username%>
+    </div>
 </div>
 <script>
     const logout=()=>{
@@ -33,7 +35,10 @@
     const showstate=false
     const user=()=>{
         var usershow=document.querySelector('.userafter')
-        usershow.style.display='block'
+        usershow.style.display='flex'
         setTimeout(()=>{usershow.style.display='none'},2000)
+    }
+    const tohome=()=>{
+        location.assign(`${window.location.origin}/<%=user._id%>`)
     }
 </script>

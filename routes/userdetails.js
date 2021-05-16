@@ -5,7 +5,7 @@ const bcrypt=require('bcrypt')
 const nodemailer = require('nodemailer')
 const validateUser=require('../functions/validateuser')
 const router= express.Router();
-
+require('dotenv/config')
 router.use(express.json())
 
 
@@ -18,7 +18,6 @@ var transport = nodemailer.createTransport({
        pass: process.env.EMAIL_PASS
     }
 })
-
 const validateQuizID= async (id)=>{
     try{
         const response=await Quiz.findById(id)
@@ -59,7 +58,6 @@ router.post('/signup', async (req,res)=>{
         try{
             const newuser= await newUser.save();
             status.data=newuser;
-            console.log(newuser.mail)
         }
         catch(err){
             status.status=false;
@@ -70,6 +68,53 @@ router.post('/signup', async (req,res)=>{
             status.error=err.message
             console.log(err)
         }
+        const message = {
+            from: process.env.EMAIL, 
+            to: newUser.mail,         
+            subject: 'Email Confirmation', 
+            html: `
+            <div style="width: 100%;
+            height: 65px;
+            background-color: aquamarine;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: royalblue;">
+                <div style="padding-left: 20px;">
+                    <div style="font-size: 30px;
+                    color :salmon;">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div style="font-size: 25px;
+                    font-family: 'Raleway', sans-serif;
+                    font-weight:bold; padding-top:15px; color:salmon;">
+                        My Quiz
+                    </div>
+                </div>
+            </div>
+            <h2>Hello, ${newUser.Name}</h2>
+            <h3>Thank you for signing up with MyQuiz2021!!</h3>
+            <div style="background-color: royalblue;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            font-size: 18px;
+            font-family: 'Raleway', sans-serif; padding-bottom:5px;">
+            <div style="padding:10px; color:white;">
+                Made with <span style="color : red;">❤</span> by MyQuiz@2021
+            </div>
+            </div>`
+        }
+    
+        transport.sendMail(message, function(err, info) {
+            if (err) {
+              console.log(err)
+            } else {
+              console.log(info);
+            }
+        })
     }
 
     catch(err){

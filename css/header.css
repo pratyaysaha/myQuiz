@@ -30,9 +30,13 @@
     font-family: 'Raleway', sans-serif;
     font-weight:bold;
 }
+.quiz-name:hover,.logo:hover{
+    cursor: pointer;
+}
 .hamburger
 {
     display: none;
+    font-size: 20px;
 }
 .userheader,.logout
 {
@@ -55,10 +59,10 @@
 }
 .userafter
 {
-    position:absolute;
-    left: calc(100% - 250px);
     font-family: 'Raleway',sans-serif;
     display: none;
+    flex-direction: row-reverse;
+    padding-right: 30px;
 }
 @media screen and (max-width: 1100px) {
     .hamburger

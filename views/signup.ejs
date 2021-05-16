@@ -157,7 +157,7 @@
         }
     }
     const signup=async ()=>{
-        if(!pass) return
+        if(!pass){errormessage('Fill the details correctly'); return}
         var data={}
         data.Name=document.querySelector('.input.uname').value
         data.mail=document.querySelector('.input.email').value
@@ -189,17 +189,13 @@
                 }
                 else
                 {
-                    errormessage(back.error)
+                    errormessage('Username or email already taken')
                 }
             })
     }
 
 </script>
 <style>
-    .content-container
-    {
-        height: 90%;
-    }
     .login-container
     {
         width: 30%;
@@ -212,18 +208,22 @@
         .login-container
         {
             width: 90%;
-        }
-    }
-    @media screen and (max-height : 580px ) {
-        .login-container
-        {
-            
-        }
-        .content-container
-        {
             height: 100%;
         }
     }
-    
+    @media screen and (max-height : 634px ) {
+        .login-container
+        {
+            height: 90%;
+        }
+        .content-container
+        {
+            height: fit-content;
+        }
+        .button-container
+        {
+            padding-bottom: 20px;
+        }
+    }
 </style>
 </html>

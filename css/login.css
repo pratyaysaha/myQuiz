@@ -12,6 +12,7 @@
     flex-direction: column;
     justify-content: center;
     padding-left: 20px;
+    overflow-x: hidden;
 }
 .username,.password
 {
@@ -120,6 +121,7 @@
     .button-container
     {
         justify-content: flex-start;
+        padding-bottom: 20px;
     }
     .signup
     {
