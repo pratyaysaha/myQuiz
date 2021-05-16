@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+.content-container
+{
+    justify-content: center;
+    align-items: center;
+}
+.login-container
+{
+    width: 30%;
+    height : 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    overflow-x: hidden;
+}
+.username,.password
+{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Raleway', sans-serif; 
+    font-size: 20px;
+    color: salmon;
+}
+
+.password{
+    padding-top: 20px;
+}
+.username > div, .password>div
+{
+    padding-bottom: 10px;
+}
+.input
+{
+    background: transparent;
+    color: white;
+    outline: none;
+    border: none;
+    width: 100%;
+    font-size: 18px;
+}
+.pass
+{
+    width:90%
+}
+.input-field
+{
+    width: 100%;
+}
+.border
+{
+    border-bottom: 2px solid orchid;
+}
+.button-container
+{
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 30px;
+    align-items: center;
+}
+.button
+{
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Raleway', sans-serif;
+    background-color:sandybrown;
+    font-size: 20px;
+    user-select: none;
+}
+.button:hover
+{
+    cursor: pointer;
+    background-color:rgb(247, 138, 44);
+}
+.whole-input
+{
+    display: flex;
+    justify-content: space-between;
+}
+.show-pass
+{
+    padding-bottom: 5px;
+}
+.show-pass:hover{
+    cursor: pointer;
+    color: white;
+}
+.create
+{
+    font-family: 'Raleway',sans-serif;
+    user-select: none;
+    display: flex;
+}
+.create-label:hover
+{
+    cursor: pointer;
+    color: aquamarine;
+}
+.error-message
+{
+    color : red;
+    font-family: 'Raleway',sans-serif;
+    font-size: 15px;
+    padding-right: 20px;
+    display: none;
+}
+
+@media screen and (max-width: 1100px) {
+    .login-container
+    {
+        width: 90%;
+        height: 90%;
+    }
+    .input-field
+    {
+        width:90%;
+    }
+    .button-container
+    {
+        justify-content: flex-start;
+        padding-bottom: 20px;
+    }
+    .signup
+    {
+        padding-top: 20px;
+    }
+}
