@@ -16,8 +16,8 @@ const Login=mongoose.Schema({
     },
     mail:{
         type: String,
-        unique: true,
         required:true,
+        unique: true,
         validate:{
                 validator : (value) =>{
                     return validator.isEmail(value)

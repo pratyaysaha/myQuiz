@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href='/login.css'>
+    <title>MyQuiz</title>
+</head>
+<body>
+    <%-include('../views/headerwm')%>
+    <div class="content-container">
+        <div class="login-container">
+            <div class="name">
+                <div class="label">
+                    Name
+                </div>
+                <div class="input-field">
+                    <input type="text" class="input uname" required placeholder="">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="username">
+                <div class="label">
+                    Email
+                </div>
+                <div class="input-field">
+                    <input type="text" class="input email" required placeholder="">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="username">
+                <div class="label">
+                    Username
+                </div>
+                <div class="input-field">
+                    <input type="text" class="input user" required placeholder="">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="password">
+                <div class="label">
+                    Password
+                </div>
+                <div class="input-field">
+                    <div class="whole-input">
+                        <input type="password" class="input pass" required placeholder="">
+                        <div class="show-pass" onclick="showpass()">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                    <div class="border"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-include('../views/footer')%>
+
+</body>
+</html>

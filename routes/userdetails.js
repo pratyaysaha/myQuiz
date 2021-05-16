@@ -17,7 +17,7 @@ var transport = nodemailer.createTransport({
        user: process.env.EMAIL,
        pass: process.env.EMAIL_PASS
     }
-});
+})
 
 const validateQuizID= async (id)=>{
     try{
@@ -60,57 +60,15 @@ router.post('/signup', async (req,res)=>{
             const newuser= await newUser.save();
             status.data=newuser;
             console.log(newuser.mail)
-            const message = {
-                from: process.env.EMAIL, 
-                to: newuser.mail,         
-                subject: 'Email Confirmation', 
-                html: `
-                <div style="width: 100%;
-                height: 65px;
-                background-color: aquamarine;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                background-color: royalblue;">
-                    <div style="padding-left: 20px;">
-                        <div style="font-size: 30px;
-                        color :salmon;">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <div style="font-size: 25px;
-                        font-family: 'Raleway', sans-serif;
-                        font-weight:bold; padding-top:15px; color:salmon;">
-                            My Quiz
-                        </div>
-                    </div>
-                </div>
-                <h1>Thank you for signing up with MyQuiz2021!!</h1>
-                <div style="background-color: royalblue;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: center;
-                height: 40px;
-                font-size: 18px;
-                font-family: 'Raleway', sans-serif; padding-bottom:5px;">
-            <div style="padding:10px; color:white;">
-                Made with <span style="color : red;">❤</span> by MyQuiz@2021
-            </div>
-        </div>`
-            }
-        
-            transport.sendMail(message, function(err, info) {
-                if (err) {
-                  console.log(err)
-                } else {
-                  console.log(info);
-                }
-            })
         }
-        
         catch(err){
             status.status=false;
-            status.code=12;
+            if(err.code)
+                status.code=err.code;
+            else    
+                status.code=12
+            status.error=err.message
+            console.log(err)
         }
     }
 
@@ -119,25 +77,6 @@ router.post('/signup', async (req,res)=>{
     }
     res.json(status)
 })
-
-// router.get('/signin', async (req,res)=>{
-//     console.log(req.query.UserName)
-//     const {status, error, code}=await validateUser(req.query.UserName)
-//     if(status==false)
-//         res.json({'status' : status, error, code})
-//     try{
-//         var cred=req.query.UserName.split(' ')
-//             const searchUser= await Loginuser.find({'username': cred[0]})
-//             console.log(searchUser)
-//             res.json(searchUser)
-//         }
-//         catch(err){
-//             res.json({'status' : false, 'error' : err, 'code' : 26}) 
-//         }
-    
-// })
-
-
 router.post('/login', async (req,res)=>{
     if(req.body.username===undefined) {return res.json({"status": false, "error" : "no username and password"})}
     
