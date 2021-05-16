@@ -27,14 +27,14 @@
                 <div class="author-name">
                     <div class="inside-label">Author name<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input aname" type="text" value="<%=quizDetails.author%>">
+                        <input class="input aname" type="text" value="<%=user.Name%>" readonly>
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="author-email">
                     <div class="inside-label">Email<span class="important">*</span></div>
                     <div class="input-field">
-                        <input class="input email" type="text" value="<%=quizDetails.authorEmail%>" onblur="validEmail(this.value)">
+                        <input class="input email" type="text" value="<%=user.mail%>" onblur="validEmail(this.value)" readonly>
                         <div class="border"></div>
                     </div>
                 </div>

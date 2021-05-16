@@ -11,4 +11,29 @@
             My Quiz
         </div>
     </div>
+    <div class="right">
+        <div class="username">
+            <%=user.username%>
+        </div>
+        <div class="after" onclick="user()">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="logout" onclick="logout()"> 
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+    </div>
 </div>
+<div class="userafter">
+    <%=user.username%>
+</div>
+<script>
+    const logout=()=>{
+        location.assign(`${window.location.origin}`)
+    }
+    const showstate=false
+    const user=()=>{
+        var usershow=document.querySelector('.userafter')
+        usershow.style.display='block'
+        setTimeout(()=>{usershow.style.display='none'},2000)
+    }
+</script>

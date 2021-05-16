@@ -8,6 +8,7 @@
     flex-direction: row;
     align-items: center;
     background-color: royalblue;
+    justify-content: space-between;
 }
 .navbar-container > div
 {
@@ -33,9 +34,42 @@
 {
     display: none;
 }
+.username,.logout
+{
+    font-family: 'Raleway',sans-serif;
+    font-size: 20px;
+    user-select: none;
+}
+.right>div{
+    padding-right: 20px;
+}
+.logout:hover
+{
+    cursor: pointer;
+    color: salmon;
+}
+.after
+{
+    display: none;
+    font-size: 20px;
+}
+.userafter
+{
+    position:absolute;
+    left: calc(100% - 250px);
+    font-family: 'Raleway',sans-serif;
+    display: none;
+}
 @media screen and (max-width: 1100px) {
     .hamburger
-{
-    display: block;
-}
+    {
+        display: block;
+    }
+    .username{
+        display: none;
+    }
+    .after
+    {
+        display: block;
+    }
 }
