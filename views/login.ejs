@@ -37,6 +37,9 @@
                 </div>
             </div>
             <div class="button-container">
+                <div class="error-message">
+
+                </div>
                 <div class="button login" onclick="login()">
                     <div class="button-label">
                         Login
@@ -73,18 +76,43 @@
         }
     }
     const login = async ()=>{
-        var username=document.querySelector('.input.user').value
-        var password=document.querySelector('.input.pass').value
-        if(username==='' || password=='')
+        var data={}
+        data.username=document.querySelector('.input.user').value
+        data.password=document.querySelector('.input.pass').value
+        if(data.username==='' || data.password=='')
         {
            alert('Fill up the fields')
            return
         }
-        console.log(username,password)
+        const url=`${window.location.origin}/api/user/login`
+        console.log(data,url)
+        await fetch(url,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body : JSON.stringify(data)
+        })
+            .then((Response)=>Response.json())
+            .then((back)=>{
+                if(back.status)
+                {
+                    const link=`${window.location.origin}/${back.data[0]._id}`
+                    location.assign(link)
+                }
+                else
+                {
+                    document.querySelector('.error-message').style.display='block'
+                    document.querySelector('.error-message').innerHTML=`${back.error}`
+                    setTimeout(()=>{
+                        document.querySelector('.error-message').style.display='none'
+                    },2000)
+                }
+            })
+
     }
     const tosignup=()=>{
         location.assign(`${window.location.origin}/signup`)
     }
-
 </script>
 </html>

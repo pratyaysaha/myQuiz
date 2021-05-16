@@ -35,9 +35,9 @@
     }
     const navigate=(path)=>{
         if(path==='allquiz')
-            location.assign(`${window.location.origin}`)
+            location.assign(`${window.location.origin}/<%=user._id%>`)
         else
-            location.assign(`${window.location.origin}/${path}`)
+            location.assign(`${window.location.origin}/<%=user.id%>/${path}`)
     }
     var state=false
     const showMenu=()=>{

@@ -11,7 +11,7 @@
 <body>
     <%- include('../views/header') %>
     <div class="content-container">
-        <%- include('../views/sidebar',{select : "allquiz"}) %>
+        <%- include('../views/sidebar',{select : "allquiz", user : user}) %>
         <div class="container">
             <%- include('../views/allquiz.ejs') %>
         </div>

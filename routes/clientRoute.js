@@ -4,7 +4,7 @@ const Questions=require('../models/questions')
 const nodemailer = require('nodemailer')
 const Submit = require('../models/submission');
 const fetch = require('node-fetch');
-const quizdetails = require('../models/quizdetails');
+const User=require('../models/login')
 require('dotenv/config')
 const router= express.Router()
 
@@ -91,6 +91,7 @@ router.get('/admin/:quizid',async (req,res)=>{
     try{
         const quizDetails=await QuizDetails.findById(req.params.quizid)
         const questions=await Questions.find({quizId: req.params.quizid},{answer : 0})
+        const user=
         console.log(quizDetails)
       
         sendQuestion=[]
@@ -203,11 +204,12 @@ router.get('/:submissionId/admin/success' ,async(req, res)=>{
             console.log(err)
         }
     })
-router.get('/edit/:quizid', async (req,res)=>{
+router.get('/:userid/edit/:quizid', async (req,res)=>{
     try{
         const quizDetails=await QuizDetails.findById(req.params.quizid)
         const questions=await Questions.find({quizId: req.params.quizid})
-        res.render('editquiz',{quizDetails,questions})
+        const user=await User.findOne({_id : req.params.userid},{password : 0})
+        res.render('editquiz',{quizDetails,questions,user})
     }
     catch(err)
     {

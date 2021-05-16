@@ -2,13 +2,14 @@ const e = require('express');
 const express = require('express')
 const Quiz= require('../models/quizdetails')
 const Question=require('../models/questions');
+const User=require('./userdetails');
 
 
 // const questions = require('../models/questions');
 const Submit = require('../models/submission');
 const questions = require('../models/questions');
 const router= express.Router();
-
+router.use('/user',User)
 
 
 
@@ -33,6 +34,7 @@ router.get('/',(req,res)=>{
 router.post('/create',async (req,res)=>{
     console.log(req.body)
     const quizdet=new Quiz({
+        // userId : req.body.userId,
         name: req.body.name,
         author:req.body.author,
         authorEmail: req.body.authorEmail,
@@ -197,8 +199,14 @@ router.get("/assessment", async (req, res) => {
     }
 })
 router.get("/quizes", async (req, res) => {
+    var QueryResponse=[]
     try{
-        const QueryResponse=await Quiz.find({})
+        if(req.query.email)
+        {
+            QueryResponse=await Quiz.find({authorEmail : req.query.email})
+        }
+        else
+            QueryResponse=await Quiz.find({})
         res.json({'status' : true, 'data' : QueryResponse})
     }
     catch(err)
