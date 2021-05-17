@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/11d589870a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href='/createquiz.css'>
+    <link rel="stylesheet" href='/login.css'>
+    <title>Forget Password</title>
+</head>
+<body>
+    <%-include("../views/headerwm")%>
+    <div class="content-container">
+        <div class="login-container">
+            <div class="msg">
+                Enter the correct code to change the password
+            </div>
+            <div class="username">
+                <div class="label">
+                    Code
+                </div>
+                <div class="input-field">
+                    <input type="text" class="input code" required placeholder="" onchange="checkcode(this.value)">
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="password">
+                <div class="label">
+                    Password
+                </div>
+                <div class="input-field">
+                    <div class="whole-input">
+                        <input type="password" class="input pass" required placeholder="">
+                        <div class="show-pass p1" onclick="showpass()">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                    <div class="border"></div>
+                </div>
+            </div>
+            <div class="button-container">
+                <div class="error-message">
+
+                </div>
+                <div class="button login" onclick="signup()">
+                    <div class="button-label">
+                        Change
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-include("../views/footer")%>
+</body>
+<script>
+    var showpassState=false
+    var errmsg=document.querySelector('.error-message')
+    const showpass=()=>{
+        var elem=document.querySelector('.input.pass')
+        var icon=document.querySelector('.show-pass')
+        if(!showpassState)
+        {
+            elem.type='text'
+            icon.innerHTML=`<i class="far fa-eye-slash"></i>`
+            showpassState=true
+        }
+        else
+        {
+            elem.type='password'
+            icon.innerHTML=`<i class="far fa-eye"></i>`
+            showpassState=false
+        }
+    }
+    const errormessage=(msg)=>{
+        errmsg.style.display='block'
+        errmsg.innerHTML=`${msg}`
+        setTimeout(()=>{errmsg.style.display='none'},2000)
+    }
+    const params = new URLSearchParams(window.location.search)
+    const checkcode=(codes)=>{
+        if(params.has('c') && codes===params.get('c'))
+        {
+            document.querySelector('.password').style.display='flex'
+            document.querySelector('.button-container').style.display='flex'
+        }
+        else
+        {
+            document.querySelector('.password').style.display='none'
+        }
+
+    }
+    const signup= async ()=>{
+        var data ={}
+        if(params.has('id'))    
+            data.id=params.get('id')
+        else
+            return
+        data.password=document.querySelector('input.pass').value
+        if(data.password===''){errormessage('Enter the password') ;return}
+        const url=`${window.location.origin}/api/user/login/forgetpassword`
+        await fetch(url,{
+            method:'PATCH',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body : JSON.stringify(data)
+        })
+            .then((Response)=>Response.json())
+            .then((back)=>{
+                if(back.status)
+                    location.assign(`${window.location.origin}`)
+                else
+                    errormessage('Not updated. Try again!!')
+            })
+    }
+</script>
+<style>
+    .msg{
+        font-size: 15px;
+        font-family: 'Raleway', sans-serif; 
+        padding-bottom: 20px;
+    }
+    .password{
+        display: none;
+    }
+    .button-container
+    {
+        display: none;
+    }
+</style>
+</html>

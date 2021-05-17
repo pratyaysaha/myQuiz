@@ -52,6 +52,11 @@
                         Create an account
                     </div>
                 </div>
+                <div class="forget">
+                    <div class="create-label" onclick="forgetpassword()">
+                        Forget Password?
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -59,6 +64,7 @@
 </body>
 <script>
     var showpassState=false
+    var errmsg=document.querySelector('.error-message')
     const showpass=()=>{
         var elem=document.querySelector('.input.pass')
         var icon=document.querySelector('.show-pass')
@@ -74,6 +80,11 @@
             icon.innerHTML=`<i class="far fa-eye"></i>`
             showpassState=false
         }
+    }
+    const errormessage=(msg)=>{
+        errmsg.style.display='block'
+        errmsg.innerHTML=`${msg}`
+        setTimeout(()=>{errmsg.style.display='none'},2000)
     }
     const login = async ()=>{
         var data={}
@@ -113,6 +124,32 @@
     }
     const tosignup=()=>{
         location.assign(`${window.location.origin}/signup`)
+    }
+    const forgetpassword= async ()=>{
+        const url=`${window.location.origin}/api/user/forgetpassword`
+        var data={}
+        var elem=document.querySelector('.input.user').value
+        console.log(elem)
+        if(elem===''){errormessage('Enter the username'); return}
+        data.username=elem
+        await fetch(url,{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body : JSON.stringify(data)
+        })
+         .then((Response)=>Response.json())
+         .then((back)=>{
+            if(back.status)
+            {
+                errormessage('Reset link sent to mail')
+            }
+            else
+            {
+                errormessage(`${back.error}`)
+            }
+         })
     }
 </script>
 <style>

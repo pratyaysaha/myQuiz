@@ -141,9 +141,51 @@ router.post('/login', async (req,res)=>{
         }
     
 })
-
-
-router.patch('/signin/forgetpassword/:userName', async (req,res)=>{
+const makeid=(length) => {
+    var result           = [];
+    var characters       = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * 
+ charactersLength)));
+   }
+   return result.join('');
+}
+router.post('/forgetpassword', async(req,res)=>{
+    const username_r=req.body.username
+    const code =makeid(6)
+    var user={}
+    try{
+        user=await Loginuser.findOne({username : username_r})
+        if(user===null)
+            return res.json({status : false, error : "User not found", code : 44})
+    }
+    catch(err)
+    {
+        return res.json({status : false, error : err.message, code : 40})
+    }
+    if(user!==null)
+    {
+        const link=`${req.protocol}://${req.get('host')}/forgetpassword/resetme?id=${user._id}&c=${code}`
+        const message = {
+            from: process.env.EMAIL, 
+            to: user.mail,         
+            subject: 'Reset password',
+            html : `<h2>Hello ${user.Name},</h2>
+                    <h3>Enter the code <span style="color :red;">${code}</span> to reset the password</h2>
+                    <a href=${link}>Click this link to reset your password</a>` 
+        }
+        transport.sendMail(message, function(err, info) {
+            if (err) {
+              console.log(err)
+            } else {
+              console.log(info);
+            }
+        })
+    }
+    res.json({status : true , message : 'code sent'})
+})
+router.patch('/login/forgetpassword', async (req,res)=>{
     var status={}
     try
     {
@@ -155,7 +197,7 @@ router.patch('/signin/forgetpassword/:userName', async (req,res)=>{
         }
         status.status=true
         try{
-            const Updatepass= await Loginuser.updateOne({"username":req.params.userName}, {$set:{"password":hashedPass}});
+            const Updatepass= await Loginuser.updateOne({"_id":req.body.id}, {'$set' :{"password":hashedPass}});
             status.data=Updatepass;
           
         console.log(Updatepass)
