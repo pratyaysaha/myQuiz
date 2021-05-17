@@ -64,6 +64,9 @@ app.get('/:userid',async (req,res)=>{
         res.send('no data')
     }
 })
+app.get('/forgetpassword/resetme',(req,res)=>{
+    res.render('forgetpass')
+})
 
 
 mongoose.connect(process.env.DB_CONNECTION,{ 

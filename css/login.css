@@ -88,11 +88,15 @@
     cursor: pointer;
     color: white;
 }
-.create
+.create,.forget
 {
     font-family: 'Raleway',sans-serif;
     user-select: none;
     display: flex;
+}
+.forget
+{
+    padding-top: 10px;
 }
 .create-label:hover
 {
