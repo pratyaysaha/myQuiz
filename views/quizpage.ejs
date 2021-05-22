@@ -179,6 +179,7 @@
     const mytime=()=>{
         if(Date.now()>= new Date(`<%=data.quizDetails.etime%>`)){
             submit();
+            clearInterval(settime)
         }
     }
     if(time==='true')
