@@ -41,20 +41,14 @@
                 <div class="start-quiz">
                     <div class="inside-label">Start time<span class="important">*</span></div>
                     <div class="input-field">
-                        <% var dt=quizDetails.stime
-                            var dtiso=dt.toISOString().substring(0,10)+'T'+dt.toString().substring(16,24)
-                        %>
-                        <input class="input stime" type="datetime-local" value="<%=dtiso%>">
+                        <input class="input stime" type="datetime-local">
                         <div class="border"></div>
                     </div>
                 </div>
                 <div class="end-quiz">
                     <div class="inside-label">End time<span class="important">*</span></div>
                     <div class="input-field">
-                        <% var dt=quizDetails.etime
-                            var dtiso=dt.toISOString().substring(0,10)+'T'+dt.toString().substring(16,24)
-                         %>
-                        <input class="input etime" type="datetime-local" value="<%=dtiso%>">
+                        <input class="input etime" type="datetime-local">
                         <div class="border"></div>
                     </div>
                 </div>
@@ -156,6 +150,13 @@
 </body>
 <script>
     var quizid=`<%=quizDetails._id%>`
+    const changeToformat=(now)=>{
+    const usefulStr = `${now.getFullYear()}-${(now.getMonth()+1 <10)? `0${now.getMonth()+1}` : `${now.getMonth()+1}`}-${now.getDate()<10 ? `0${now.getDate()}`: `${now.getDate()}`}T${now.getHours() <10 ? `0${now.getHours()}`: `${now.getHours()}`}:${now.getMinutes()<10?`0${now.getMinutes()}`: `${now.getMinutes()}`}`
+    return usefulStr
+}
+    document.querySelector('.input.etime').value=changeToformat(new Date(`<%=quizDetails.etime%>`))
+    document.querySelector('.input.stime').value=changeToformat(new Date(`<%=quizDetails.stime%>`))
+
     const validEmail=(email)=>{
         var mailformat = /^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9\-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/
         if(email.match(mailformat))
@@ -354,6 +355,10 @@
         })
         .then((Response)=>Response.json())
         .then((back)=>{
+            if(back.status)
+            {
+                alert('Question Updated!!')
+            }
             if(!back.status)
                 alert('Cannot Update. Try Again!!')
         })
@@ -394,6 +399,10 @@
             })
     }
     const deleteQuestion=async (val)=>{
+        if(!confirm('Do you want to delete this question?'))
+        {
+            return
+        }
         const qid=document.querySelector(`.question.q${val}`).id
         const url=`${window.location.origin}/api/question/${qid}`
         await fetch(url,{
@@ -404,7 +413,10 @@
         }).then((Response)=>Response.json())
         .then((data)=>{
             if(data.status)
+            {
+                alert('Question Deleted')
                 document.querySelector(`.question.q${val}`).remove()
+            }
             else
                 alert("try again!!")
         }) 

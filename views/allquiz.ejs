@@ -19,13 +19,11 @@
                     received=back.data
                 }
             })
-        received.map((item)=>{
+        received.map((item,index)=>{
             document.querySelector('.quiz-list').insertAdjacentHTML("beforeend",`<div class="quiz" id="${item._id}">
                 <div class="name">
                     <div class="link-quiz">
-                        <a href="/quiz/admin/${item._id}">
-                            ${item.name}
-                        </a>
+                        <a href="/quiz/admin/${item._id}" class='quiz${index}'>${item.name}</a>
                     </div>
                 </div>
                 <div class="edit" onclick="editpage('${item._id}')">
@@ -33,7 +31,7 @@
                         <i class="fa fa-pen" aria-hidden="true"></i>
                     </div>
                 </div>
-                <div class="edit" onclick="deletequiz('${item._id}')">
+                <div class="edit" onclick="deletequiz('${item._id}','${index}')">
                     <div class="button-edit">
                         <i class="fas fa-trash-alt"></i>
                     </div>
@@ -58,7 +56,13 @@
     const editpage=(id)=>{
         location.assign(`${window.location.origin}/quiz/<%=user._id%>/edit/${id}`)
     }
-    const deletequiz=async (id)=>{
+    const deletequiz=async (id,index)=>{
+        const quizName=document.querySelector(`.quiz${index}`).innerHTML
+        console.log(quizName)
+        if(!confirm(`Do you want to delete ${quizName}?`))
+        {
+            return
+        }
         const url=`${window.location.origin}/api/create/${id}`
         await fetch(url,{
             method:'DELETE',
@@ -71,6 +75,7 @@
             {
                 document.querySelector('.quiz-list').innerHTML=''
                 getQuizes()
+                alert(`${quizName} deleted successfully!!`)
             }
             
             else

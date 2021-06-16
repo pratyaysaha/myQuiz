@@ -324,6 +324,7 @@
                                     </div>
                                 </div>`
                 document.getElementsByClassName(`question q${val}`)[0].id=back.data._id
+                alert('Question Added!!!')
             }
             else
             {
@@ -373,6 +374,8 @@
         .then((back)=>{
             if(!back.status)
                 alert('Cannot Update. Try Again!!')
+            else
+                alert('Question updated!!')
         })
     }  
     const updateCreate=()=>{
@@ -411,6 +414,10 @@
             })
     }
     const deleteQuestion=async (val)=>{
+        if(!confirm('Do you want to delete this question?'))
+        {
+            return
+        }
         const qid=document.querySelector(`.question.q${val}`).id
         const url=`${window.location.origin}/api/question/${qid}`
         await fetch(url,{
@@ -421,7 +428,10 @@
         }).then((Response)=>Response.json())
         .then((data)=>{
             if(data.status)
+            {
                 document.querySelector(`.question.q${val}`).remove()
+                alert('Quesion removed!!')
+            }
             else
                 alert("try again!!")
         }) 
